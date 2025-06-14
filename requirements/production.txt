@@ -43,7 +43,7 @@ msgraph-core==0.2.2
 # Utilities
 python-dotenv==1.0.0
 click==8.1.7
-pydantic==2.3.0
+pydantic==2.4.0
 tenacity==8.2.3
 
 # Development and testing (optional)
