@@ -104,11 +104,11 @@ python -m knowledgeops.api.knowledgeops_app
 
 ## 📖 Documentation
 
-- **[Architecture Guide](docs/architecture.md)** - Technical architecture and design patterns
+- **[Architecture Guide](docs/ARCHITECTURE.md)** - Technical architecture and design patterns
 - **[Deployment Guide](docs/deployment.md)** - Production deployment instructions
-- **[API Documentation](docs/api.md)** - Complete API reference with examples
-- **[Configuration Guide](docs/configuration.md)** - Detailed configuration options
-- **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
+- **[API Documentation](docs/API.md)** - Complete API reference with examples
+- **[Configuration Guide](docs/CONFIGURATION.md)** - Detailed configuration options
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
 
 ## 🔧 API Usage
 
