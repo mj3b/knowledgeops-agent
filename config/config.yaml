@@ -1,0 +1,286 @@
+# NAVO Configuration
+# T-Mobile Enterprise knowledge discovery platform configuration
+
+# T-Mobile Enterprise GPT Configuration
+openai:
+  api_key: "${TMOBILE_ENTERPRISE_GPT_API_KEY}"
+  organization_id: "${TMOBILE_ORGANIZATION_ID}"
+  base_url: "https://api.openai.com/v1"
+  default_model: "gpt-4o"
+  max_tokens: 4000
+  temperature: 0.7
+  timeout: 60
+
+# Integration Settings
+integrations:
+  confluence:
+    enabled: true
+    base_url: "${CONFLUENCE_BASE_URL}"
+    username: "${CONFLUENCE_USERNAME}"
+    api_token: "${CONFLUENCE_API_TOKEN}"
+    # T-Mobile specific spaces for engineering teams
+    spaces_to_sync:
+      - "ENG"        # Engineering documentation
+      - "QLAB"       # Quality lab procedures and scripts
+      - "QLAB02"     # Specific QLAB02 project documentation
+      - "RUNBOOKS"   # Operational runbooks and SOPs
+      - "ONBOARD"    # Onboarding materials and guides
+      - "PROTOCOLS"  # VuGen, TruClient, and testing protocols
+      - "APIS"       # API documentation and versioning
+    spaces_to_exclude:
+      - "ARCHIVE"    # Archived content
+      - "TEMP"       # Temporary workspace
+      - "DRAFT"      # Draft content
+    content_types:
+      - "page"
+      - "blogpost"
+    max_results_per_request: 50
+    sync_attachments: true
+    max_attachment_size_mb: 10
+    extract_custom_fields: true
+    respect_permissions: true
+    # T-Mobile specific content tracking
+    track_freshness: true
+    flag_outdated_content: true
+    outdated_threshold_days: 90
+
+  sharepoint:
+    enabled: true
+    tenant_id: "${SHAREPOINT_TENANT_ID}"
+    client_id: "${SHAREPOINT_CLIENT_ID}"
+    client_secret: "${SHAREPOINT_CLIENT_SECRET}"
+    scope: "https://graph.microsoft.com/.default"
+    # T-Mobile engineering SharePoint sites
+    site_urls:
+      - "https://tmobile.sharepoint.com/sites/Engineering"
+      - "https://tmobile.sharepoint.com/sites/QualityLab"
+      - "https://tmobile.sharepoint.com/sites/Documentation"
+      - "https://tmobile.sharepoint.com/sites/Runbooks"
+      - "https://tmobile.sharepoint.com/sites/Onboarding"
+      - "https://tmobile.sharepoint.com/sites/Protocols"
+    sites_to_exclude:
+      - "https://tmobile.sharepoint.com/sites/Archive"
+      - "https://tmobile.sharepoint.com/sites/Personal"
+    file_types:
+      - ".docx"
+      - ".pdf"
+      - ".txt"
+      - ".md"
+      - ".pptx"
+      - ".xlsx"
+    max_file_size_mb: 50
+    max_results_per_request: 50
+    extract_metadata: true
+    respect_permissions: true
+    track_freshness: true
+
+# Cache Configuration
+cache:
+  redis_url: "${REDIS_URL:-redis://localhost:6379}"
+  redis_db: 0
+  default_ttl: 3600        # 1 hour
+  query_cache_ttl: 1800    # 30 minutes
+  document_cache_ttl: 7200 # 2 hours
+  max_cache_size: 10000
+  memory_cache_max_size: 1000
+
+# Query Processing Settings - T-Mobile Engineering Focus
+query_processing:
+  max_keywords: 10
+  confidence_threshold: 0.7
+  # T-Mobile specific organizational entities
+  organizational_entities:
+    systems:
+      - "qlab02"
+      - "qlab"
+      - "confluence"
+      - "sharepoint"
+      - "teams"
+      - "azure"
+      - "loadrunner"
+    protocols:
+      - "vugen"
+      - "truclient"
+      - "synthetic"
+      - "loadrunner"
+      - "performance"
+      - "monitoring"
+    workstreams:
+      - "engineering"
+      - "quality"
+      - "operations"
+      - "onboarding"
+      - "documentation"
+      - "runbooks"
+    project_codes:
+      - "qlab02"
+      - "qlab01"
+      - "eng-sprint"
+      - "ops-runbook"
+    technologies:
+      - "python"
+      - "javascript"
+      - "react"
+      - "docker"
+      - "kubernetes"
+      - "azure"
+      - "api"
+      - "rest"
+      - "microservices"
+
+# Response Generation Settings
+response_generation:
+  max_context_length: 8000
+  include_sources: true
+  generate_follow_ups: true
+  confidence_threshold: 0.7
+  max_response_tokens: 1000
+  max_search_results: 10
+  # T-Mobile specific response features
+  include_freshness_ratings: true
+  flag_outdated_content: true
+  include_content_flags: true
+  sprint_context_aware: true
+
+# Permission Management
+permissions:
+  enforce_source_permissions: true
+  cache_permissions: true
+  permission_cache_ttl: 3600  # 1 hour
+  admin_users:
+    - "admin@tmobile.com"
+    - "navo-admin@tmobile.com"
+  default_permissions:
+    confluence: "read"
+    sharepoint: "read"
+
+# T-Mobile Teams Integration
+teams_integration:
+  enabled: true
+  webhook_url: "${TMOBILE_TEAMS_WEBHOOK_URL}"
+  adaptive_cards: true
+  notification_channels:
+    - "engineering-general"
+    - "quality-lab"
+    - "documentation-updates"
+  
+# Content Management
+content_management:
+  freshness_tracking: true
+  outdated_threshold_days: 90
+  content_flags:
+    - "outdated_content"
+    - "missing_documentation" 
+    - "conflicting_information"
+    - "needs_review"
+  auto_flag_outdated: true
+
+# Server Configuration
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  reload: false
+  access_log: true
+
+# CORS Settings
+cors:
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8000"
+    - "https://tmobile.com"
+    - "https://*.tmobile.com"
+  allow_credentials: true
+  allowed_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "DELETE"
+    - "OPTIONS"
+  allowed_headers:
+    - "*"
+
+# Rate Limiting
+rate_limiting:
+  enabled: true
+  requests_per_minute: 120  # Higher for engineering teams
+  burst_size: 20
+  storage_uri: "${REDIS_URL:-redis://localhost:6379}"
+
+# Authentication (T-Mobile SSO)
+authentication:
+  enabled: true
+  jwt_secret: "${JWT_SECRET:-your-secret-key-change-in-production}"
+  token_expiry_hours: 8  # Work day
+  algorithm: "HS256"
+  
+  # T-Mobile OAuth integration
+  oauth:
+    microsoft:
+      enabled: true
+      client_id: "${MICROSOFT_CLIENT_ID}"
+      client_secret: "${MICROSOFT_CLIENT_SECRET}"
+      tenant_id: "${MICROSOFT_TENANT_ID}"
+      domain_restriction: "tmobile.com"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "navo.log"
+  max_file_size: "10MB"
+  backup_count: 5
+  
+  # Structured logging for T-Mobile compliance
+  structured: true
+  json_format: true
+  
+  # Log specific components
+  loggers:
+    navo.core: "INFO"
+    navo.integrations: "INFO"
+    navo.api: "INFO"
+    navo.teams: "INFO"
+    uvicorn: "INFO"
+    fastapi: "WARNING"
+
+# Monitoring and Metrics
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+  
+  health_check:
+    enabled: true
+    path: "/health"
+    detailed: true
+  
+  # T-Mobile specific metrics
+  custom_metrics:
+    track_query_types: true
+    track_workstream_usage: true
+    track_content_freshness: true
+    track_teams_interactions: true
+
+# Feature Flags
+features:
+  advanced_analytics: true
+  teams_adaptive_cards: true
+  content_freshness_tracking: true
+  sprint_context_awareness: true
+  outdated_content_flagging: true
+  multi_workstream_support: true
+  real_time_sync: true
+  document_preview: true
+  export_functionality: true
+
+# Development Settings (only for development)
+development:
+  debug: false
+  auto_reload: false
+  mock_integrations: false
+  sample_data: false
+  enable_test_queries: false
+
