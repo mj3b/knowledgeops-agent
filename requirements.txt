@@ -5,7 +5,7 @@
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
-python-multipart==0.0.6
+python-multipart==0.0.18
 
 # HTTP client
 aiohttp==3.9.1
@@ -27,7 +27,7 @@ python-dotenv==1.0.0
 # Authentication and security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
+python-multipart==0.0.18
 
 # Microsoft Graph API (SharePoint)
 msal==1.25.0
