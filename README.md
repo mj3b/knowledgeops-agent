@@ -2,7 +2,7 @@
 ## "NAVO knows where it's written."
 
 **Version:** 2.0.0  
-**Built with:** T-Mobile Enterprise GPT Integration  
+**Built for:** T-Mobile Enterprise GPT Integration  
 **Architecture:** Hybrid Cloud-Native  
 
 ---
