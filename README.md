@@ -5,6 +5,10 @@
 **Built for:** T-Mobile Enterprise GPT Integration  
 **Architecture:** Hybrid Cloud-Native  
 
+## 🧠 Background
+
+NAVO was originally designed as a prototype to address documentation accessibility challenges faced by enterprise engineering teams—specifically within the T-Mobile workstream. While not an official T-Mobile product, it was inspired by real-world use cases observed during collaboration and consulting efforts.
+
 ---
 
 ## 🎯 The Engineering Problem
@@ -51,7 +55,7 @@ This friction adds up—**delaying delivery, onboarding, and team efficiency.**
 
 ### NAVO vs. Traditional Knowledge Systems
 
-**Traditional Approach (JUNO-style):**
+**Traditional Approach:**
 - Static knowledge bases with manual categorization
 - Search-based discovery requiring exact keywords
 - Separate systems for different document types
