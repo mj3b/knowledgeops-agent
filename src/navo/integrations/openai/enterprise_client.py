@@ -1,6 +1,6 @@
 """
-T-Mobile Enterprise GPT Client for NAVO
-Handles all interactions with T-Mobile Enterprise GPT API.
+Enterprise GPT Client for NAVO
+Handles all interactions with Enterprise GPT API.
 """
 
 import asyncio
@@ -15,16 +15,16 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class TMobileGPTMessage:
-    """Represents a message in T-Mobile Enterprise GPT chat format."""
+class EnterpriseGPTMessage:
+    """Represents a message in Enterprise GPT chat format."""
     role: str  # "system", "user", "assistant"
     content: str
     name: Optional[str] = None
 
 
 @dataclass
-class TMobileGPTResponse:
-    """Represents a response from T-Mobile Enterprise GPT."""
+class EnterpriseGPTResponse:
+    """Represents a response from Enterprise GPT."""
     content: str
     model: str
     usage: Dict[str, int]
@@ -32,17 +32,17 @@ class TMobileGPTResponse:
     response_time: float
 
 
-class TMobileEnterpriseGPTClient:
+class EnterpriseGPTClient:
     """
-    Client for T-Mobile Enterprise GPT API integration.
+    Client for Enterprise GPT API integration.
     
     Provides enterprise-grade AI capabilities with unlimited access,
-    enhanced security, and T-Mobile specific optimizations.
+    enhanced security, and enterprise-specific optimizations.
     """
     
     def __init__(self, config: Dict[str, Any]):
         """
-        Initialize T-Mobile Enterprise GPT client.
+        Initialize Enterprise GPT client.
         
         Args:
             config: Configuration dictionary with API keys and settings
@@ -57,32 +57,32 @@ class TMobileEnterpriseGPTClient:
         self.timeout = config.get("timeout", 60)
         
         if not self.api_key:
-            raise ValueError("T-Mobile Enterprise GPT API key is required")
+            raise ValueError("Enterprise GPT API key is required")
         
         if not self.organization_id:
-            raise ValueError("T-Mobile Organization ID is required")
+            raise ValueError("Enterprise Organization ID is required")
         
-        # Headers for T-Mobile Enterprise GPT API
+        # Headers for Enterprise GPT API
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
             "OpenAI-Organization": self.organization_id,
             "Content-Type": "application/json",
-            "User-Agent": "NAVO-TMobile-Enterprise/2.0.0"
+            "User-Agent": "NAVO-Enterprise/2.0.0"
         }
         
-        logger.info("T-Mobile Enterprise GPT client initialized")
+        logger.info("Enterprise GPT client initialized")
     
     async def generate_response(
         self,
-        messages: List[TMobileGPTMessage],
+        messages: List[EnterpriseGPTMessage],
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         stream: bool = False,
         **kwargs
-    ) -> TMobileGPTResponse:
+    ) -> EnterpriseGPTResponse:
         """
-        Generate response using T-Mobile Enterprise GPT.
+        Generate response using Enterprise GPT.
         
         Args:
             messages: List of messages for the conversation
@@ -111,7 +111,7 @@ class TMobileEnterpriseGPTClient:
                 **kwargs
             }
             
-            logger.info(f"Generating response with T-Mobile Enterprise GPT model: {payload['model']}")
+            logger.info(f"Generating response with Enterprise GPT model: {payload['model']}")
             
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
                 async with session.post(
@@ -122,7 +122,7 @@ class TMobileEnterpriseGPTClient:
                     
                     if response.status != 200:
                         error_text = await response.text()
-                        raise Exception(f"T-Mobile Enterprise GPT API error {response.status}: {error_text}")
+                        raise Exception(f"Enterprise GPT API error {response.status}: {error_text}")
                     
                     result = await response.json()
             
@@ -134,7 +134,7 @@ class TMobileEnterpriseGPTClient:
             content = choice["message"]["content"]
             
             # Create response object
-            gpt_response = TMobileGPTResponse(
+            gpt_response = EnterpriseGPTResponse(
                 content=content,
                 model=result["model"],
                 usage=result["usage"],
@@ -142,14 +142,14 @@ class TMobileEnterpriseGPTClient:
                 response_time=response_time
             )
             
-            logger.info(f"T-Mobile Enterprise GPT response generated successfully. "
+            logger.info(f"Enterprise GPT response generated successfully. "
                        f"Tokens: {result['usage']['total_tokens']}, "
                        f"Time: {response_time:.2f}s")
             
             return gpt_response
             
         except Exception as e:
-            logger.error(f"Error generating response with T-Mobile Enterprise GPT: {str(e)}")
+            logger.error(f"Error generating response with Enterprise GPT: {str(e)}")
             raise
     
     async def generate_embeddings(
@@ -158,7 +158,7 @@ class TMobileEnterpriseGPTClient:
         model: str = "text-embedding-ada-002"
     ) -> List[List[float]]:
         """
-        Generate embeddings using T-Mobile Enterprise GPT.
+        Generate embeddings using Enterprise GPT.
         
         Args:
             texts: List of texts to embed
@@ -184,7 +184,7 @@ class TMobileEnterpriseGPTClient:
                     
                     if response.status != 200:
                         error_text = await response.text()
-                        raise Exception(f"T-Mobile Enterprise GPT embeddings error {response.status}: {error_text}")
+                        raise Exception(f"Enterprise GPT embeddings error {response.status}: {error_text}")
                     
                     result = await response.json()
             
@@ -200,7 +200,7 @@ class TMobileEnterpriseGPTClient:
     
     async def health_check(self) -> Dict[str, Any]:
         """
-        Check T-Mobile Enterprise GPT service health.
+        Check Enterprise GPT service health.
         
         Returns:
             Health status information
@@ -208,11 +208,11 @@ class TMobileEnterpriseGPTClient:
         try:
             # Simple test query
             test_messages = [
-                TMobileGPTMessage(
+                EnterpriseGPTMessage(
                     role="system",
-                    content="You are NAVO, T-Mobile's enterprise knowledge assistant."
+                    content="You are NAVO, an enterprise knowledge assistant."
                 ),
-                TMobileGPTMessage(
+                EnterpriseGPTMessage(
                     role="user", 
                     content="Test connectivity"
                 )
@@ -225,7 +225,7 @@ class TMobileEnterpriseGPTClient:
             
             return {
                 "status": "healthy",
-                "service": "T-Mobile Enterprise GPT",
+                "service": "Enterprise GPT",
                 "model": self.default_model,
                 "organization": self.organization_id,
                 "response_time": f"{response.response_time:.2f}s",
@@ -233,23 +233,23 @@ class TMobileEnterpriseGPTClient:
             }
             
         except Exception as e:
-            logger.error(f"T-Mobile Enterprise GPT health check failed: {str(e)}")
+            logger.error(f"Enterprise GPT health check failed: {str(e)}")
             return {
                 "status": "unhealthy",
-                "service": "T-Mobile Enterprise GPT",
+                "service": "Enterprise GPT",
                 "error": str(e),
                 "test_successful": False
             }
     
     def get_client_info(self) -> Dict[str, Any]:
         """
-        Get T-Mobile Enterprise GPT client information.
+        Get Enterprise GPT client information.
         
         Returns:
             Client configuration information
         """
         return {
-            "service": "T-Mobile Enterprise GPT",
+            "service": "Enterprise GPT",
             "model": self.default_model,
             "organization": self.organization_id,
             "base_url": self.base_url,
@@ -261,5 +261,5 @@ class TMobileEnterpriseGPTClient:
     
     async def close(self):
         """Close the client and cleanup resources."""
-        logger.info("T-Mobile Enterprise GPT client closed")
+        logger.info("Enterprise GPT client closed")
 

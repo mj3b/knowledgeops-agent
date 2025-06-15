@@ -67,12 +67,12 @@ def override_with_env_vars(config: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Updated configuration
     """
-    # T-Mobile Enterprise GPT settings
-    if os.getenv("TMOBILE_ENTERPRISE_GPT_API_KEY"):
-        config.setdefault("openai", {})["api_key"] = os.getenv("TMOBILE_ENTERPRISE_GPT_API_KEY")
+    # Enterprise GPT settings
+    if os.getenv("ENTERPRISE_GPT_API_KEY"):
+        config.setdefault("openai", {})["api_key"] = os.getenv("ENTERPRISE_GPT_API_KEY")
     
-    if os.getenv("TMOBILE_ORGANIZATION_ID"):
-        config.setdefault("openai", {})["organization_id"] = os.getenv("TMOBILE_ORGANIZATION_ID")
+    if os.getenv("ENTERPRISE_ORGANIZATION_ID"):
+        config.setdefault("openai", {})["organization_id"] = os.getenv("ENTERPRISE_ORGANIZATION_ID")
     
     # Confluence settings
     if os.getenv("CONFLUENCE_BASE_URL"):
@@ -117,8 +117,8 @@ def get_default_config() -> Dict[str, Any]:
     """
     return {
         "openai": {
-            "api_key": os.getenv("TMOBILE_ENTERPRISE_GPT_API_KEY", ""),
-            "organization_id": os.getenv("TMOBILE_ORGANIZATION_ID", ""),
+            "api_key": os.getenv("ENTERPRISE_GPT_API_KEY", ""),
+            "organization_id": os.getenv("ENTERPRISE_ORGANIZATION_ID", ""),
             "default_model": "gpt-4o",
             "max_tokens": 4000,
             "temperature": 0.7,
