@@ -1,6 +1,6 @@
 """
-OpenAI Enterprise Client for NAVO
-Handles all interactions with OpenAI Enterprise API.
+T-Mobile Enterprise GPT Client for NAVO
+Handles all interactions with T-Mobile Enterprise GPT API.
 """
 
 import asyncio
@@ -15,16 +15,16 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class OpenAIMessage:
-    """Represents a message in OpenAI chat format."""
+class TMobileGPTMessage:
+    """Represents a message in T-Mobile Enterprise GPT chat format."""
     role: str  # "system", "user", "assistant"
     content: str
     name: Optional[str] = None
 
 
 @dataclass
-class OpenAIResponse:
-    """Represents a response from OpenAI Enterprise."""
+class TMobileGPTResponse:
+    """Represents a response from T-Mobile Enterprise GPT."""
     content: str
     model: str
     usage: Dict[str, int]
@@ -32,17 +32,17 @@ class OpenAIResponse:
     response_time: float
 
 
-class OpenAIEnterpriseClient:
+class TMobileEnterpriseGPTClient:
     """
-    Client for OpenAI Enterprise API integration.
+    Client for T-Mobile Enterprise GPT API integration.
     
     Provides enterprise-grade AI capabilities with unlimited access,
-    enhanced security, and advanced features.
+    enhanced security, and T-Mobile specific optimizations.
     """
     
     def __init__(self, config: Dict[str, Any]):
         """
-        Initialize OpenAI Enterprise client.
+        Initialize T-Mobile Enterprise GPT client.
         
         Args:
             config: Configuration dictionary with API keys and settings
@@ -56,273 +56,210 @@ class OpenAIEnterpriseClient:
         self.temperature = config.get("temperature", 0.7)
         self.timeout = config.get("timeout", 60)
         
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        
-        # Session for connection pooling
-        self.session = None
-        
         if not self.api_key:
-            raise ValueError("OpenAI Enterprise API key is required")
+            raise ValueError("T-Mobile Enterprise GPT API key is required")
         
-        self.logger.info("OpenAI Enterprise client initialized")
-    
-    async def _get_session(self) -> aiohttp.ClientSession:
-        """Get or create aiohttp session."""
-        if self.session is None or self.session.closed:
-            headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json",
-                "User-Agent": "NAVO/2.0.0"
-            }
-            
-            if self.organization_id:
-                headers["OpenAI-Organization"] = self.organization_id
-            
-            timeout = aiohttp.ClientTimeout(total=self.timeout)
-            self.session = aiohttp.ClientSession(
-                headers=headers,
-                timeout=timeout
-            )
+        if not self.organization_id:
+            raise ValueError("T-Mobile Organization ID is required")
         
-        return self.session
+        # Headers for T-Mobile Enterprise GPT API
+        self.headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "OpenAI-Organization": self.organization_id,
+            "Content-Type": "application/json",
+            "User-Agent": "NAVO-TMobile-Enterprise/2.0.0"
+        }
+        
+        logger.info("T-Mobile Enterprise GPT client initialized")
     
-    async def chat_completion(
+    async def generate_response(
         self,
-        messages: List[OpenAIMessage],
+        messages: List[TMobileGPTMessage],
         model: Optional[str] = None,
-        temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        temperature: Optional[float] = None,
+        stream: bool = False,
         **kwargs
-    ) -> OpenAIResponse:
+    ) -> TMobileGPTResponse:
         """
-        Create a chat completion using OpenAI Enterprise.
+        Generate response using T-Mobile Enterprise GPT.
         
         Args:
-            messages: List of messages in the conversation
+            messages: List of messages for the conversation
             model: Model to use (defaults to configured model)
-            temperature: Sampling temperature
             max_tokens: Maximum tokens in response
+            temperature: Response creativity (0.0-1.0)
+            stream: Whether to stream the response
             **kwargs: Additional parameters
             
         Returns:
-            OpenAIResponse with the completion
+            Generated response
         """
-        start_time = datetime.utcnow()
-        
-        session = await self._get_session()
-        
-        # Prepare request payload
-        payload = {
-            "model": model or self.default_model,
-            "messages": [
-                {
-                    "role": msg.role,
-                    "content": msg.content,
-                    **({"name": msg.name} if msg.name else {})
-                }
-                for msg in messages
-            ],
-            "temperature": temperature or self.temperature,
-            "max_tokens": max_tokens or self.max_tokens,
-            **kwargs
-        }
+        start_time = datetime.now()
         
         try:
-            async with session.post(
-                f"{self.base_url}/chat/completions",
-                json=payload
-            ) as response:
-                
-                if response.status != 200:
-                    error_text = await response.text()
-                    raise Exception(f"OpenAI API error {response.status}: {error_text}")
-                
-                result = await response.json()
-                
-                # Calculate response time
-                response_time = (datetime.utcnow() - start_time).total_seconds()
-                
-                # Extract response data
-                choice = result["choices"][0]
-                
-                return OpenAIResponse(
-                    content=choice["message"]["content"],
-                    model=result["model"],
-                    usage=result.get("usage", {}),
-                    finish_reason=choice.get("finish_reason", "unknown"),
-                    response_time=response_time
-                )
-                
+            # Prepare request payload
+            payload = {
+                "model": model or self.default_model,
+                "messages": [
+                    {"role": msg.role, "content": msg.content}
+                    for msg in messages
+                ],
+                "max_tokens": max_tokens or self.max_tokens,
+                "temperature": temperature or self.temperature,
+                "stream": stream,
+                **kwargs
+            }
+            
+            logger.info(f"Generating response with T-Mobile Enterprise GPT model: {payload['model']}")
+            
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
+                async with session.post(
+                    f"{self.base_url}/chat/completions",
+                    headers=self.headers,
+                    json=payload
+                ) as response:
+                    
+                    if response.status != 200:
+                        error_text = await response.text()
+                        raise Exception(f"T-Mobile Enterprise GPT API error {response.status}: {error_text}")
+                    
+                    result = await response.json()
+            
+            # Calculate response time
+            response_time = (datetime.now() - start_time).total_seconds()
+            
+            # Extract response data
+            choice = result["choices"][0]
+            content = choice["message"]["content"]
+            
+            # Create response object
+            gpt_response = TMobileGPTResponse(
+                content=content,
+                model=result["model"],
+                usage=result["usage"],
+                finish_reason=choice["finish_reason"],
+                response_time=response_time
+            )
+            
+            logger.info(f"T-Mobile Enterprise GPT response generated successfully. "
+                       f"Tokens: {result['usage']['total_tokens']}, "
+                       f"Time: {response_time:.2f}s")
+            
+            return gpt_response
+            
         except Exception as e:
-            self.logger.error(f"Error in chat completion: {str(e)}")
+            logger.error(f"Error generating response with T-Mobile Enterprise GPT: {str(e)}")
             raise
     
     async def generate_embeddings(
         self,
-        texts: Union[str, List[str]],
-        model: str = "text-embedding-3-large"
+        texts: List[str],
+        model: str = "text-embedding-ada-002"
     ) -> List[List[float]]:
         """
-        Generate embeddings for text(s) using OpenAI Enterprise.
+        Generate embeddings using T-Mobile Enterprise GPT.
         
         Args:
-            texts: Text or list of texts to embed
+            texts: List of texts to embed
             model: Embedding model to use
             
         Returns:
             List of embedding vectors
         """
-        session = await self._get_session()
-        
-        # Ensure texts is a list
-        if isinstance(texts, str):
-            texts = [texts]
-        
-        payload = {
-            "model": model,
-            "input": texts
-        }
-        
         try:
-            async with session.post(
-                f"{self.base_url}/embeddings",
-                json=payload
-            ) as response:
-                
-                if response.status != 200:
-                    error_text = await response.text()
-                    raise Exception(f"OpenAI API error {response.status}: {error_text}")
-                
-                result = await response.json()
-                
-                # Extract embeddings
-                embeddings = [item["embedding"] for item in result["data"]]
-                
-                return embeddings
-                
+            payload = {
+                "model": model,
+                "input": texts
+            }
+            
+            logger.info(f"Generating embeddings for {len(texts)} texts")
+            
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
+                async with session.post(
+                    f"{self.base_url}/embeddings",
+                    headers=self.headers,
+                    json=payload
+                ) as response:
+                    
+                    if response.status != 200:
+                        error_text = await response.text()
+                        raise Exception(f"T-Mobile Enterprise GPT embeddings error {response.status}: {error_text}")
+                    
+                    result = await response.json()
+            
+            embeddings = [item["embedding"] for item in result["data"]]
+            
+            logger.info(f"Generated {len(embeddings)} embeddings successfully")
+            
+            return embeddings
+            
         except Exception as e:
-            self.logger.error(f"Error generating embeddings: {str(e)}")
+            logger.error(f"Error generating embeddings: {str(e)}")
             raise
-    
-    async def analyze_document(
-        self,
-        document_content: str,
-        analysis_type: str = "summary"
-    ) -> Dict[str, Any]:
-        """
-        Analyze a document using OpenAI Enterprise advanced data analysis.
-        
-        Args:
-            document_content: The document content to analyze
-            analysis_type: Type of analysis (summary, key_points, entities, etc.)
-            
-        Returns:
-            Dictionary containing analysis results
-        """
-        system_prompts = {
-            "summary": "You are an expert document analyzer. Provide a concise, informative summary of the given document, highlighting the main points and key information.",
-            "key_points": "You are an expert document analyzer. Extract the key points and important information from the given document. Present them as a structured list.",
-            "entities": "You are an expert document analyzer. Extract and categorize named entities from the document (people, organizations, locations, dates, etc.).",
-            "questions": "You are an expert document analyzer. Generate relevant questions that this document answers, along with the answers."
-        }
-        
-        messages = [
-            OpenAIMessage(
-                role="system",
-                content=system_prompts.get(analysis_type, system_prompts["summary"])
-            ),
-            OpenAIMessage(
-                role="user",
-                content=f"Please analyze the following document:\n\n{document_content}"
-            )
-        ]
-        
-        response = await self.chat_completion(
-            messages=messages,
-            temperature=0.3  # Lower temperature for more consistent analysis
-        )
-        
-        return {
-            "analysis_type": analysis_type,
-            "result": response.content,
-            "model": response.model,
-            "processing_time": response.response_time
-        }
-    
-    async def custom_gpt_query(
-        self,
-        query: str,
-        gpt_id: str,
-        context: Optional[Dict[str, Any]] = None
-    ) -> OpenAIResponse:
-        """
-        Query a custom GPT created for the organization.
-        
-        Args:
-            query: The query to send to the custom GPT
-            gpt_id: ID of the custom GPT
-            context: Additional context for the query
-            
-        Returns:
-            OpenAIResponse with the custom GPT's response
-        """
-        # Note: This is a placeholder for custom GPT functionality
-        # The actual implementation would depend on OpenAI's custom GPT API
-        
-        system_message = "You are NAVO, an enterprise knowledge assistant. You have access to organizational knowledge and should provide helpful, accurate responses."
-        
-        if context:
-            system_message += f"\n\nAdditional context: {json.dumps(context, indent=2)}"
-        
-        messages = [
-            OpenAIMessage(role="system", content=system_message),
-            OpenAIMessage(role="user", content=query)
-        ]
-        
-        return await self.chat_completion(messages=messages)
     
     async def health_check(self) -> Dict[str, Any]:
         """
-        Perform health check on OpenAI Enterprise connection.
+        Check T-Mobile Enterprise GPT service health.
         
         Returns:
-            Dictionary containing health status
+            Health status information
         """
         try:
-            # Simple test request to verify connectivity
+            # Simple test query
             test_messages = [
-                OpenAIMessage(role="user", content="Hello, this is a health check.")
+                TMobileGPTMessage(
+                    role="system",
+                    content="You are NAVO, T-Mobile's enterprise knowledge assistant."
+                ),
+                TMobileGPTMessage(
+                    role="user", 
+                    content="Test connectivity"
+                )
             ]
             
-            response = await self.chat_completion(
+            response = await self.generate_response(
                 messages=test_messages,
                 max_tokens=10
             )
             
             return {
                 "status": "healthy",
-                "model": response.model,
-                "response_time": response.response_time,
-                "timestamp": datetime.utcnow().isoformat()
+                "service": "T-Mobile Enterprise GPT",
+                "model": self.default_model,
+                "organization": self.organization_id,
+                "response_time": f"{response.response_time:.2f}s",
+                "test_successful": True
             }
             
         except Exception as e:
+            logger.error(f"T-Mobile Enterprise GPT health check failed: {str(e)}")
             return {
                 "status": "unhealthy",
+                "service": "T-Mobile Enterprise GPT",
                 "error": str(e),
-                "timestamp": datetime.utcnow().isoformat()
+                "test_successful": False
             }
     
+    def get_client_info(self) -> Dict[str, Any]:
+        """
+        Get T-Mobile Enterprise GPT client information.
+        
+        Returns:
+            Client configuration information
+        """
+        return {
+            "service": "T-Mobile Enterprise GPT",
+            "model": self.default_model,
+            "organization": self.organization_id,
+            "base_url": self.base_url,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "timeout": self.timeout,
+            "version": "2.0.0"
+        }
+    
     async def close(self):
-        """Close the client session."""
-        if self.session and not self.session.closed:
-            await self.session.close()
-    
-    async def __aenter__(self):
-        """Async context manager entry."""
-        return self
-    
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """Async context manager exit."""
-        await self.close()
+        """Close the client and cleanup resources."""
+        logger.info("T-Mobile Enterprise GPT client closed")
 

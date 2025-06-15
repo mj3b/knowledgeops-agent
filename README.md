@@ -381,7 +381,7 @@ Copyright (c) 2025 NAVO Team. All rights reserved.
 
 - **Documentation**: [docs/](docs/)
 - **Issues**: Create an issue in the repository
-- **Email**: support@navo.example.com
+- **Email**: navo-support@tmobile.com
 
 ---
 

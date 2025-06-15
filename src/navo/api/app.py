@@ -112,7 +112,7 @@ def create_app(config: Dict[str, Any]) -> FastAPI:
     """
     app = FastAPI(
         title="NAVO - Navigate + Ops",
-        description="Enterprise knowledge discovery platform with OpenAI Enterprise integration",
+        description="T-Mobile Enterprise knowledge discovery platform with Enterprise GPT integration",
         version="2.0.0",
         docs_url="/api/docs",
         redoc_url="/api/redoc",
