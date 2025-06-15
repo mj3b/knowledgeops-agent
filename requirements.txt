@@ -11,7 +11,7 @@ python-multipart==0.0.6
 aiohttp==3.9.1
 httpx==0.25.2
 
-# T-Mobile Enterprise GPT
+# Enterprise GPT
 openai==1.3.7
 
 # Database and caching

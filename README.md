@@ -71,7 +71,7 @@ This friction adds up—**delaying delivery, onboarding, and team efficiency.**
 ### Core Architecture Principles
 
 1. **Knowledge Where Work Happens** - Integrate with Teams, not replace it
-2. **Context-Rich Understanding** - Recognize T-Mobile systems, protocols, and project codes
+2. **Context-Rich Understanding** - Recognize enterprise systems, protocols, and project codes
 3. **Source Attribution** - Always cite sources with confidence and freshness ratings
 4. **Permission Respect** - Honor existing access controls from source systems
 5. **Continuous Learning** - Improve responses based on usage patterns and feedback
@@ -136,10 +136,10 @@ NAVO implements a hybrid architecture that leverages:
 - **Modern Web UI**: Responsive chat interface with real-time updates
 - **RESTful APIs**: Comprehensive API for integration and automation
 
-## 🔧 T-Mobile Engineering Features
+## 🔧 Enterprise Engineering Features
 
 ### Sprint-Aware Intelligence
-- **Project Code Recognition** - Understands QLAB02, VuGen, TruClient, and other T-Mobile systems
+- **Project Code Recognition** - Understands project codes, testing frameworks, and enterprise systems
 - **Workstream Context** - Recognizes engineering, quality, operations, and onboarding contexts
 - **Current Sprint Awareness** - Provides relevant information for active development work
 - **Protocol Documentation** - Easy access to VuGen vs. TruClient differences and configurations
@@ -150,11 +150,11 @@ NAVO implements a hybrid architecture that leverages:
 - **Conflicting Information Detection** - Flags when multiple sources provide different answers
 - **Missing Documentation Alerts** - Identifies gaps in knowledge coverage
 
-### T-Mobile Integration Ready
+### Enterprise Integration Ready
 - **Teams Adaptive Cards** - Rich, interactive responses within Microsoft Teams
-- **T-Mobile SSO** - Seamless authentication with existing T-Mobile credentials
-- **Confluence Spaces** - Pre-configured for ENG, QLAB, RUNBOOKS, ONBOARD spaces
-- **SharePoint Sites** - Integrated with T-Mobile engineering SharePoint sites
+- **Enterprise SSO** - Seamless authentication with existing enterprise credentials
+- **Confluence Spaces** - Pre-configured for engineering, documentation, runbooks, and onboarding spaces
+- **SharePoint Sites** - Integrated with enterprise engineering SharePoint sites
 - **Audit Logging** - Enterprise-grade logging for compliance and monitoring
 
 ## 🎯 Why NAVO vs. Traditional Knowledge Systems?
@@ -170,10 +170,10 @@ Traditional knowledge management systems like JUNO work well for **structured, c
 
 ### NAVO's Engineering-First Approach
 
-**NAVO is built specifically for how T-Mobile engineers actually work:**
+**NAVO is built specifically for how enterprise engineers actually work:**
 
 1. **Conversational Discovery** - Ask questions in natural language, get intelligent answers
-2. **Context Awareness** - Understands you're working on QLAB02 and need retry logic documentation
+2. **Context Awareness** - Understands your current project and provides relevant documentation
 3. **Multi-Source Intelligence** - Searches Confluence and SharePoint simultaneously
 4. **Freshness Intelligence** - Automatically flags outdated content and suggests current alternatives
 5. **Teams Integration** - Brings answers directly into your workflow, no context switching
@@ -228,8 +228,8 @@ Edit `config/config.yaml` or use environment variables:
 
 ```yaml
 openai:
-  api_key: "${TMOBILE_ENTERPRISE_GPT_API_KEY}"
-  organization_id: "${TMOBILE_ORGANIZATION_ID}"
+  api_key: "${ENTERPRISE_GPT_API_KEY}"
+  organization_id: "${ENTERPRISE_ORGANIZATION_ID}"
   default_model: "gpt-4o"
 
 integrations:
@@ -238,26 +238,26 @@ integrations:
     base_url: "${CONFLUENCE_BASE_URL}"
     username: "${CONFLUENCE_USERNAME}"
     api_token: "${CONFLUENCE_API_TOKEN}"
-    # T-Mobile specific spaces
+    # Enterprise spaces for engineering teams
     spaces_to_sync:
-      - "ENG"      # Engineering documentation
-      - "QLAB"     # Quality lab procedures
-      - "RUNBOOKS" # Operational runbooks
-      - "ONBOARD"  # Onboarding materials
+      - "ENG"        # Engineering documentation
+      - "DOCS"       # General documentation  
+      - "RUNBOOKS"   # Operational runbooks
+      - "ONBOARD"    # Onboarding materials
   
   sharepoint:
     enabled: true
     tenant_id: "${SHAREPOINT_TENANT_ID}"
     client_id: "${SHAREPOINT_CLIENT_ID}"
     client_secret: "${SHAREPOINT_CLIENT_SECRET}"
-    # T-Mobile engineering sites
-    site_urls:
-      - "https://tmobile.sharepoint.com/sites/Engineering"
-      - "https://tmobile.sharepoint.com/sites/QualityLab"
-      - "https://tmobile.sharepoint.com/sites/Documentation"
+    # Enterprise engineering sites
+    sites:
+      - "https://yourcompany.sharepoint.com/sites/Engineering"
+      - "https://yourcompany.sharepoint.com/sites/QualityLab"
+      - "https://yourcompany.sharepoint.com/sites/Documentation"
 
 query_processing:
-  # T-Mobile specific entities
+  # Enterprise specific entities
   organizational_entities:
     systems:
       - "qlab02"
@@ -326,7 +326,7 @@ curl -X POST "http://localhost:8000/api/v1/query" \
       "title": "QLAB02 Synthetic Script Configuration",
       "source": "confluence",
       "space": "QLAB",
-      "url": "https://tmobile.atlassian.net/wiki/spaces/QLAB/pages/123456/Synthetic+Scripts",
+      "url": "https://yourcompany.atlassian.net/wiki/spaces/ENG/pages/123456/Synthetic+Scripts",
       "relevance_score": 0.95,
       "freshness": "updated_2_days_ago",
       "freshness_score": 0.9
@@ -335,7 +335,7 @@ curl -X POST "http://localhost:8000/api/v1/query" \
       "title": "Retry Patterns and Best Practices",
       "source": "confluence", 
       "space": "ENG",
-      "url": "https://tmobile.atlassian.net/wiki/spaces/ENG/pages/789012/Retry+Patterns",
+      "url": "https://yourcompany.atlassian.net/wiki/spaces/ENG/pages/789012/Retry+Patterns",
       "relevance_score": 0.87,
       "freshness": "updated_1_week_ago",
       "freshness_score": 0.8
@@ -481,7 +481,7 @@ in the Software without restriction...
 
 - **Documentation**: [docs/](docs/)
 - **Issues**: Create an issue in the repository
-- **Email**: navo-support@tmobile.com
+- **Email**: navo-support@yourcompany.com
 
 ---
 
