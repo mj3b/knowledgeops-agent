@@ -1,5 +1,5 @@
 # NAVO Requirements
-# T-Mobile Enterprise knowledge discovery platform with Enterprise GPT integration
+# Enterprise knowledge discovery platform with Enterprise GPT integration
 
 # Core dependencies
 fastapi==0.104.1

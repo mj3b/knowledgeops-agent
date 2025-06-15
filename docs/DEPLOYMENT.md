@@ -327,9 +327,9 @@ spec:
 
 ```bash
 # Production environment variables
-export TMOBILE_ENTERPRISE_GPT_API_KEY="your_enterprise_gpt_api_key"
-export TMOBILE_ORGANIZATION_ID="your_tmobile_org_id"
-export CONFLUENCE_BASE_URL="https://tmobile.atlassian.net"
+export ENTERPRISE_GPT_API_KEY="your_enterprise_gpt_api_key"
+export ENTERPRISE_ORGANIZATION_ID="your_enterprise_org_id"
+export CONFLUENCE_BASE_URL="https://yourcompany.atlassian.net"
 export CONFLUENCE_USERNAME="service_account"
 export CONFLUENCE_API_TOKEN="your_api_token"
 export SHAREPOINT_TENANT_ID="your_tenant_id"
@@ -394,13 +394,13 @@ rate_limiting:
 # /etc/nginx/sites-available/navo
 server {
     listen 80;
-    server_name navo.tmobile.com;
+    server_name navo.yourcompany.com;
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name navo.tmobile.com;
+    server_name navo.yourcompany.com;
 
     ssl_certificate /etc/ssl/certs/navo.crt;
     ssl_certificate_key /etc/ssl/private/navo.key;

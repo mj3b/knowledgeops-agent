@@ -2,18 +2,18 @@
 ## "NAVO knows where it's written."
 
 **Version:** 2.0.0  
-**Built for:** T-Mobile Enterprise GPT Integration  
+**Built for:** Enterprise GPT Integration  
 **Architecture:** Hybrid Cloud-Native  
 
 ## 🚀 Enterprise Use Case
 
-NAVO was developed with large-scale engineering teams in mind, including those at T-Mobile, where internal feedback and sprint challenges helped shape its capabilities for Confluence and SharePoint integration.
+NAVO was developed with large-scale engineering teams in mind, where internal feedback and sprint challenges helped shape its capabilities for Confluence and SharePoint integration.
 
 ---
 
 ## 🎯 The Engineering Problem
 
-Engineering teams within T-Mobile workstreams frequently lose time searching for documentation across multiple systems—primarily Confluence and SharePoint. Whether it's retry logic for synthetic scripts, VuGen vs. TruClient protocol notes, or onboarding SOPs, the challenge isn't that information doesn't exist—**it's that it's hard to find, inconsistently tagged, and siloed across platforms.**
+Engineering teams within enterprise workstreams frequently lose time searching for documentation across multiple systems—primarily Confluence and SharePoint. Whether it's retry logic for synthetic scripts, VuGen vs. TruClient protocol notes, or onboarding SOPs, the challenge isn't that information doesn't exist—**it's that it's hard to find, inconsistently tagged, and siloed across platforms.**
 
 ### The Real Cost
 - **Frequent Microsoft Teams interruptions** - "Where's the retry logic for QLAB02?"
@@ -28,7 +28,7 @@ This friction adds up—**delaying delivery, onboarding, and team efficiency.**
 
 ## 🚀 The NAVO Solution
 
-**NAVO (Navigate + Ops)** is T-Mobile's AI-powered knowledge agent designed to make documentation accessible through natural language conversations directly within MS Teams. Unlike a basic chatbot, NAVO uses T-Mobile's Enterprise GPT to understand context-rich engineering queries and return summarized, relevant documentation pulled from both Confluence and SharePoint.
+**NAVO (Navigate + Ops)** is an AI-powered knowledge agent designed to make documentation accessible through natural language conversations directly within MS Teams. Unlike a basic chatbot, NAVO uses Enterprise GPT to understand context-rich engineering queries and return summarized, relevant documentation pulled from both Confluence and SharePoint.
 
 ### Real Engineering Queries NAVO Handles
 ```
@@ -63,7 +63,7 @@ This friction adds up—**delaying delivery, onboarding, and team efficiency.**
 
 **NAVO's Hybrid Approach:**
 - **AI-powered understanding** of natural language queries
-- **Context-aware responses** that understand T-Mobile terminology (QLAB02, VuGen, etc.)
+- **Context-aware responses** that understand enterprise terminology and project codes
 - **Multi-source integration** - seamlessly searches Confluence and SharePoint
 - **Intelligent content management** - automatic freshness tracking and outdated content flagging
 - **Sprint-aware context** - understands current project contexts and workstream needs
@@ -82,7 +82,7 @@ This friction adds up—**delaying delivery, onboarding, and team efficiency.**
 
 - Python 3.11+
 - Redis server
-- T-Mobile Enterprise GPT API access
+- Enterprise GPT API access
 - Confluence and/or SharePoint access (optional)
 
 ### Installation
@@ -280,21 +280,23 @@ query_processing:
 ### Environment Variables
 
 ```bash
-# Required - T-Mobile Enterprise GPT
-TMOBILE_ENTERPRISE_GPT_API_KEY=your_enterprise_gpt_api_key
-TMOBILE_ORGANIZATION_ID=your_organization_id
+# Required - Enterprise GPT
+ENTERPRISE_GPT_API_KEY=your_enterprise_gpt_api_key
+ENTERPRISE_ORGANIZATION_ID=your_organization_id
 
-# T-Mobile Confluence
-CONFLUENCE_BASE_URL=https://tmobile.atlassian.net
-CONFLUENCE_USERNAME=your_service_account
+# Confluence
+CONFLUENCE_BASE_URL=https://yourcompany.atlassian.net
+CONFLUENCE_USERNAME=your_username
 CONFLUENCE_API_TOKEN=your_api_token
 
-# T-Mobile SharePoint
+# SharePoint
 SHAREPOINT_TENANT_ID=your_tenant_id
 SHAREPOINT_CLIENT_ID=your_client_id
 SHAREPOINT_CLIENT_SECRET=your_client_secret
+```
 
-# Infrastructure
+### Infrastructure
+```bash
 REDIS_URL=redis://localhost:6379
 ```
 
