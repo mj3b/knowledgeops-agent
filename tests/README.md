@@ -6,11 +6,11 @@ This directory contains comprehensive test suites for all NAVO components, ensur
 
 ```
 tests/
-├── __init__.py                 # Test package initialization
-├── conftest.py                 # Pytest configuration and fixtures
-├── unit/                       # Unit tests
+├── __init__.py                          # Test package initialization
+├── conftest.py                          # Pytest configuration and fixtures
+├── unit/                                # Unit tests
 │   ├── __init__.py
-│   ├── core/                   # Core component tests
+│   ├── core/                            # Core component tests
 │   │   ├── test_navo_engine.py
 │   │   ├── test_memory_layer.py
 │   │   ├── test_reasoning_engine.py
@@ -18,32 +18,32 @@ tests/
 │   │   ├── test_response_generator.py
 │   │   ├── test_cache_manager.py
 │   │   └── test_permission_manager.py
-│   ├── integrations/           # Integration tests
+│   ├── integrations/                     # Integration tests
 │   │   ├── test_confluence_client.py
 │   │   ├── test_sharepoint_client.py
 │   │   └── test_enterprise_gpt_client.py
-│   └── api/                    # API tests
+│   └── api/                              # API tests
 │       ├── test_query_routes.py
 │       ├── test_memory_routes.py
 │       ├── test_admin_routes.py
 │       └── test_health_routes.py
-├── integration/                # Integration tests
+├── integration/                          # Integration tests
 │   ├── __init__.py
 │   ├── test_end_to_end.py
 │   ├── test_memory_learning.py
 │   ├── test_reasoning_pipeline.py
 │   └── test_multi_source_search.py
-├── performance/                # Performance tests
+├── performance/                          # Performance tests
 │   ├── __init__.py
 │   ├── test_load_performance.py
 │   ├── test_memory_performance.py
 │   └── test_concurrent_queries.py
-├── fixtures/                   # Test data and fixtures
+├── fixtures/                             # Test data and fixtures
 │   ├── __init__.py
 │   ├── sample_documents.py
 │   ├── mock_responses.py
 │   └── test_data.json
-└── utils/                      # Test utilities
+└── utils/                                # Test utilities
     ├── __init__.py
     ├── mock_clients.py
     ├── test_helpers.py
