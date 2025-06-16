@@ -1,42 +1,44 @@
+<<<<<<< HEAD
 # NAVO Requirements 
 # Enterprise knowledge discovery platform with Enterprise GPT integration (mj3b)
 
+=======
+>>>>>>> 4c2379d (🚀 Phase 3 & 4 Complete: Production-Ready Enterprise Knowledge Orchestration Platform)
 # Core dependencies
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
+pydantic-settings==2.1.0
 python-multipart==0.0.6
-
-# HTTP client
 aiohttp==3.9.1
-httpx==0.25.2
+aiofiles==23.2.1
+python-dateutil==2.8.2
+orjson==3.9.10
+email-validator==2.1.0
+slowapi==0.1.9
 
-# Enterprise GPT
-openai==1.3.7
-
-# Database and caching
-redis==5.0.1
+# Database
 sqlalchemy==2.0.23
-alembic==1.13.1
+alembic==1.13.0
 asyncpg==0.29.0
+aiosqlite==0.19.0
 
-# Configuration and environment
-pyyaml==6.0.1
-python-dotenv==1.0.0
+# Cache and messaging
+redis==5.0.1
+aioredis==2.0.1
 
 # Authentication and security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
 
-# Microsoft Graph API (SharePoint)
+# Microsoft Graph and SharePoint
 msal==1.25.0
 msgraph-core==0.2.2
 
-# Confluence API
+# Confluence
 atlassian-python-api==3.41.10
 
-# Text processing and NLP
+# NLP and text processing
 nltk==3.8.1
 spacy==3.7.2
 beautifulsoup4==4.12.2
@@ -47,14 +49,14 @@ PyPDF2==3.0.1
 pandas==2.1.4
 numpy==1.25.2
 
-# Async utilities
+# Async and messaging
 asyncio-mqtt==0.16.1
 
-# Monitoring and logging
+# Logging and monitoring
 structlog==23.2.0
 prometheus-client==0.19.0
 
-# Development dependencies
+# Development and testing
 pytest==7.4.3
 pytest-asyncio==0.21.1
 pytest-cov==4.1.0
@@ -62,24 +64,6 @@ black==23.11.0
 flake8==6.1.0
 mypy==1.7.1
 
-# Web templates
+# Templates
 jinja2==3.1.2
-
-# File handling
-aiofiles==23.2.1
-
-# Date/time utilities
-python-dateutil==2.8.2
-
-# JSON handling
-orjson==3.9.10
-
-# Validation
-email-validator==2.1.0
-
-# Rate limiting
-slowapi==0.1.9
-
-# CORS
-python-cors==1.7.0
 
