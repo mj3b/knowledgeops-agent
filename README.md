@@ -103,13 +103,13 @@ Built using Enterprise GPT, NAVO is designed for secure integration with future 
     │   Memory &      │   Multi-Source  │   Proactive Knowledge   │
     │   Reasoning     │   Orchestration │   Management            │
     ├─────────────────┼─────────────────┼─────────────────────────┤
-    │ • Memory Layer  │ • Source Coord  │ • Predictive Caching   │
+    │ • Memory Layer  │ • Source Coord  │ • Predictive Caching    │
     │ • Reasoning     │ • Cross-Platform│ • Content Lifecycle     │
-    │ • Learning      │ • Unified Search│ • Auto-Organization    │
+    │ • Learning      │ • Unified Search│ • Auto-Organization     │
     │ • Governance    │ • Permission    │ • Knowledge Gaps        │
     ├─────────────────┴─────────────────┴─────────────────────────┤
     │                  Shared Infrastructure                      │
-    │    • SQLite/PostgreSQL • Redis • Enterprise GPT • Teams    │
+    │    • SQLite/PostgreSQL • Redis • Enterprise GPT • Teams     │
     └─────────────────────────────────────────────────────────────┘
 
 ### Technology Stack
