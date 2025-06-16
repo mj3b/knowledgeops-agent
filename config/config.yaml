@@ -101,7 +101,7 @@ query:
   enable_freshness_tracking: true
   similarity_threshold: 0.7
 
-# Microsoft Teams Integration
+# MS Teams Integration
 teams:
   webhook_url: "${TEAMS_WEBHOOK_URL:-}"
   adaptive_cards_enabled: true
