@@ -1,5 +1,5 @@
-# NAVO Requirements
-# Enterprise knowledge discovery platform with Enterprise GPT integration
+# NAVO Requirements 
+# Enterprise knowledge discovery platform with Enterprise GPT integration (mj3b)
 
 # Core dependencies
 fastapi==0.104.1
