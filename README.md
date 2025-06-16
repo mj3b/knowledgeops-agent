@@ -5,10 +5,13 @@
 [![Latency](https://img.shields.io/badge/Latency-127ms-blue)](docs/PERFORMANCE.md)
 [![Phase](https://img.shields.io/badge/Phase-2%20complete-orange)](docs/ARCHITECTURE.md)
 [![Enterprise](https://img.shields.io/badge/Enterprise-Ready-purple)](docs/DEPLOYMENT.md)
+[![Vendor Neutral](https://img.shields.io/badge/Vendor-Neutral-green)](VENDOR_NEUTRALITY.md)
 
 *"NAVO knows where it's written."*
 
 **Core Value Proposition**: Transform documentation discovery from reactive searching to proactive knowledge delivery through AI-powered conversational interfaces with transparent reasoning and continuous learning.
+
+> **🎯 100% Vendor Neutral**: This repository is completely vendor-agnostic and ready for deployment in any enterprise organization. See [Vendor Neutrality Statement](VENDOR_NEUTRALITY.md) for details.
 
 ---
 
