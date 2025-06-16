@@ -11,7 +11,7 @@ import yaml
 import uvicorn
 from typing import Dict, Any
 
-# Add src to path for imports
+# Add src to path for imports: mj3b
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from navo.api.app import create_app
