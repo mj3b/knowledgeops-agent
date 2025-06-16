@@ -280,33 +280,33 @@ python demo_scenarios.py
 navo/
 ├── src/navo/                      # Core application code
 │   ├── core/                      # Core NAVO components
-│   │   ├── navo_engine.py        # Central orchestrator
-│   │   ├── memory_layer.py       # Persistent memory system
-│   │   ├── reasoning_engine.py   # Transparent reasoning
-│   │   ├── query_processor.py    # Query understanding
-│   │   ├── response_generator.py # Response generation
-│   │   ├── cache_manager.py      # Multi-level caching
-│   │   └── permission_manager.py # Access control
+│   │   ├── navo_engine.py         # Central orchestrator
+│   │   ├── memory_layer.py        # Persistent memory system
+│   │   ├── reasoning_engine.py    # Transparent reasoning
+│   │   ├── query_processor.py     # Query understanding
+│   │   ├── response_generator.py  # Response generation
+│   │   ├── cache_manager.py       # Multi-level caching
+│   │   └── permission_manager.py  # Access control
 │   ├── integrations/              # External system integrations
-│   │   ├── openai/               # Enterprise GPT client
-│   │   ├── confluence/           # Confluence API client
-│   │   └── sharepoint/           # SharePoint Graph API
-│   ├── api/                      # FastAPI application
-│   │   └── app.py               # API endpoints and routing
-│   └── web/                      # Web interface
-│       └── templates/           # HTML templates
-├── docs/                         # Comprehensive documentation
-│   ├── ARCHITECTURE.md          # Technical architecture
-│   └── DEPLOYMENT.md            # Deployment guide
-├── tests/                        # Test infrastructure
-│   └── test_navo.py            # Comprehensive test suite
-├── config/                       # Configuration files
-│   └── config.yaml             # Application configuration
-├── .env.example                  # Environment variables template
-├── requirements.txt              # Python dependencies
-├── Dockerfile                    # Container configuration
-├── docker-compose.yml           # Multi-service deployment
-└── main.py                      # Application entry point
+│   │   ├── openai/                # Enterprise GPT client
+│   │   ├── confluence/            # Confluence API client
+│   │   └── sharepoint/            # SharePoint Graph API
+│   ├── api/                       # FastAPI application
+│   │   └── app.py                 # API endpoints and routing
+│   └── web/                       # Web interface
+│       └── templates/             # HTML templates
+├── docs/                          # Comprehensive documentation
+│   ├── ARCHITECTURE.md            # Technical architecture
+│   └── DEPLOYMENT.md              # Deployment guide
+├── tests/                         # Test infrastructure
+│   └── test_navo.py               # Comprehensive test suite
+├── config/                        # Configuration files
+│   └── config.yaml                # Application configuration
+├── .env.example                   # Environment variables template
+├── requirements.txt               # Python dependencies
+├── Dockerfile                     # Container configuration
+├── docker-compose.yml             # Multi-service deployment
+└── main.py                        # Application entry point
 ```
 
 ### Core Components
