@@ -10,13 +10,13 @@ integrations/
 ├── base.py                     # Base integration interface
 ├── openai/                     # Enterprise GPT integration
 │   ├── __init__.py
-│   └── enterprise_client.py   # OpenAI Enterprise client
+│   └── enterprise_client.py    # OpenAI Enterprise client
 ├── confluence/                 # Atlassian Confluence integration
 │   ├── __init__.py
-│   └── client.py              # Confluence API client
+│   └── client.py               # Confluence API client
 └── sharepoint/                 # Microsoft SharePoint integration
     ├── __init__.py
-    └── client.py              # SharePoint Graph API client
+    └── client.py               # SharePoint Graph API client
 ```
 
 ## Integration Overview
