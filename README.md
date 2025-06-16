@@ -71,14 +71,14 @@
 
 NAVO transforms reactive documentation search into proactive knowledge orchestration. Built for enterprise-scale deployment with comprehensive governance, transparent reasoning, and autonomous decision-making capabilities.
 
-Engineering teams within enterprise workstreams frequently lose time searching for documentation across multiple systems—primarily Confluence and SharePoint. Whether it's retry logic for synthetic scripts, VuGen vs. TruClient protocol notes, or onboarding SOPs, the challenge isn't that information doesn't exist—**it's that it's hard to find, inconsistently tagged, and siloed across platforms.**
+Engineering teams within enterprise workstreams frequently lose time searching for documentation across multiple systems—primarily Confluence and SharePoint. Whether it's retry logic for synthetic scripts, protocol configuration notes, or onboarding SOPs, the challenge isn't that information doesn't exist—**it's that it's hard to find, inconsistently tagged, and siloed across platforms.**
 
 This results in frequent Microsoft Teams interruptions, repeated context-switching, and growing reliance on "tribal knowledge." The productivity cost becomes even more apparent during sprint execution, where engineers pause development work to track down documents or wait for teammates to share links. This friction adds up—delaying delivery, onboarding, and team efficiency.
 
 **NAVO (Navigate + Ops)** is our response to this problem. NAVO is an AI-powered knowledge agent designed to make documentation accessible through natural language conversations directly within MS Teams. Unlike a basic chatbot, NAVO uses advanced Enterprise GPT-based models to understand context-rich engineering queries and return summarized, relevant documentation pulled from both Confluence and SharePoint.
 
 Users can ask NAVO questions like:
-- "Where's the retry logic for QLAB02 scripts?"
+- "Where's the retry logic for project scripts?"
 - "What's the API versioning standard?"
 - "Do we have a runbook for production incidents?"
 
@@ -461,11 +461,11 @@ POST /api/v1/query
 Content-Type: application/json
 
 {
-  "query": "Where's the retry logic for QLAB02 scripts?",
+  "query": "Where's the retry logic for project scripts?",
   "context": {
     "user_id": "user123",
     "team": "engineering",
-    "project": "QLAB02"
+    "project": "PROJECT01"
   },
   "options": {
     "include_reasoning": true,
@@ -481,7 +481,7 @@ Content-Type: application/json
   "query_id": "uuid-123",
   "results": [
     {
-      "title": "QLAB02 Retry Logic Configuration",
+      "title": "Project Retry Logic Configuration",
       "url": "https://confluence.company.com/pages/123",
       "source": "confluence",
       "relevance_score": 0.94,
@@ -515,7 +515,7 @@ Content-Type: application/json
   "result_id": "uuid-789",
   "feedback": "helpful",
   "rating": 5,
-  "comment": "Exactly what I needed for the QLAB02 setup"
+  "comment": "Exactly what I needed for the project setup"
 }
 ```
 

@@ -305,7 +305,7 @@ def custom_openapi():
     
     # Add custom schema elements
     openapi_schema["info"]["x-logo"] = {
-        "url": "https://navo.ai/logo.png"
+        "url": "https://example.com/logo.png"
     }
     
     app.openapi_schema = openapi_schema
@@ -320,17 +320,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 class QueryExample(BaseModel):
-    query: str = "Where's the retry logic for QLAB02 scripts?"
+    query: str = "Where's the retry logic for project scripts?"
     context: dict = {"user_id": "user123", "team": "engineering"}
     
     class Config:
         schema_extra = {
             "example": {
-                "query": "Where's the retry logic for QLAB02 scripts?",
+                "query": "Where's the retry logic for project scripts?",
                 "context": {
                     "user_id": "user123",
                     "team": "engineering",
-                    "project": "QLAB02"
+                    "project": "PROJECT01"
                 },
                 "options": {
                     "max_results": 5,

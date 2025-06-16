@@ -235,7 +235,7 @@ class QueryProcessor:
         # Extract common technical terms
         tech_patterns = {
             "version": r"v?\d+\.\d+(?:\.\d+)?",
-            "code": r"[A-Z]{2,}\d{2,}",  # e.g., QLAB02, TM2-KP
+            "code": r"[A-Z]{2,}\d{2,}",  # e.g., PROJ01, SYS-KP
             "url": r"https?://[^\s]+",
             "email": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
         }

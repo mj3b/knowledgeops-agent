@@ -395,7 +395,7 @@ async def demo_performance_metrics():
     queries = [
         "Where's the retry logic documentation?",
         "What's the onboarding process?",
-        "How do I configure VuGen scripts?",
+        "How do I configure script automation?",
         "What are the API rate limits?",
         "Where's the troubleshooting guide?"
     ]

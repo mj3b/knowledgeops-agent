@@ -325,11 +325,11 @@ class TestEndToEnd:
         response = self.client.post(
             "/api/v1/query",
             json={
-                "query": "Where's the retry logic for QLAB02 scripts?",
+                "query": "Where's the retry logic for project scripts?",
                 "context": {
                     "user_id": "test_user",
                     "team": "engineering",
-                    "project": "QLAB02"
+                    "project": "PROJECT01"
                 },
                 "options": {
                     "max_results": 5,
