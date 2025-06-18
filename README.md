@@ -1,12 +1,16 @@
 # NAVO: Microsoft Teams Knowledge Discovery Bot
-> A lightweight AI-powered Teams bot that answers engineering questions by pulling content from Confluence and SharePoint using GPT.
+
+**NAVO** is your AI-powered teammate for documentation clarity. Designed for engineering teams, NAVO turns natural language queries into precise, sourced answers from Confluence and SharePoint—right inside Microsoft Teams.
+
+> **NAVO knows where it’s written.**  
+> It’s not just documentation search—it’s documentation orchestration.
+
+Built with Enterprise GPT integration, NAVO enhances productivity by bringing tribal knowledge, sprint specs, and production playbooks to where work happens.
 
 [![Production](https://img.shields.io/badge/Production-Ready-brightgreen)](https://github.com/mj3b/navo)
 [![Teams](https://img.shields.io/badge/Microsoft-Teams-blue)](https://teams.microsoft.com)
 [![Confluence](https://img.shields.io/badge/Confluence-Cloud-blue)](https://www.atlassian.com/software/confluence)
 [![SharePoint](https://img.shields.io/badge/SharePoint-Online-blue)](https://www.microsoft.com/en-us/microsoft-365/sharepoint)
-
-**NAVO brings your documentation to where work happens.** Ask questions in Microsoft Teams and get instant answers from your Confluence and SharePoint documentation, powered by Enterprise GPT.
 
 ---
 
@@ -79,6 +83,16 @@ NAVO responds with:
 
 ---
 
+## How It Works
+
+1. Ask a question in Teams  
+2. NAVO searches Confluence & SharePoint  
+3. You get a sourced, summarized answer—with links
+
+![NAVO Response Example](./assets/NAVO_Teams_Response.png)
+
+---
+
 ## Architecture
 
 ```
@@ -87,6 +101,16 @@ Microsoft Teams → NAVO Bot → Query Processor → [Confluence + SharePoint] �
 
 **Technology Stack:**  
 Enterprise GPT · Microsoft Teams · FastAPI · Confluence Cloud · SharePoint Online · Redis
+
+---
+
+## Feature Roadmap
+
+| Phase | Feature Highlights                                        | Status       |
+|-------|-----------------------------------------------------------|--------------|
+| 1     | Natural language querying + GPT answers + source links    | Completed    |
+| 2     | Confidence scoring, freshness indicators, reasoning trace | In Progress  |
+| 3     | Feedback loop and adaptive learning                       | Planned      |
 
 ---
 
