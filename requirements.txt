@@ -1,84 +1,28 @@
-# NAVO Requirements 
-# Enterprise knowledge discovery platform with Enterprise GPT integration
+# NAVO Requirements - Simplified for Teams integration
 
-# Core dependencies - Updated for security
+# Core dependencies
 fastapi==0.115.13
-uvicorn[standard]==0.32.1
+uvicorn==0.32.1
 pydantic==2.11.7
-pydantic-settings==2.8.0
-python-multipart==0.0.20
-aiohttp==3.11.11
-aiofiles==24.1.0
-python-dateutil==2.9.0
-orjson==3.10.12
-email-validator==2.2.0
-slowapi==0.1.9
 
-# Database - Updated versions
-sqlalchemy==2.0.36
-alembic==1.14.0
-asyncpg==0.30.0
-aiosqlite==0.20.0
-
-# Cache and messaging - Updated
-redis==5.2.1
-aioredis==2.0.1
-
-# Authentication and security - Critical updates
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-cryptography==45.0.4
-
-# Microsoft Graph and SharePoint - Updated
-msal==1.31.1
-msgraph-core==1.0.0
-
-# Confluence - Updated
-atlassian-python-api==3.41.16
-
-# NLP and text processing - Updated
-nltk==3.9.1
-spacy==3.8.3
-beautifulsoup4==4.12.3
-python-docx==1.1.2
-PyPDF2==3.0.1
-
-# Data processing - Updated
-pandas==2.3.0
-numpy==2.3.0
-
-# Async and messaging
-asyncio-mqtt==0.16.2
-
-# Logging and monitoring - Updated
-structlog==25.4.0
-prometheus-client==0.21.1
-
-# Development and testing - Updated
-pytest==8.4.1
-pytest-asyncio==0.24.0
-pytest-cov==6.0.0
-black==24.10.0
-flake8==7.1.1
-mypy==1.14.0
-
-# Templates - Updated
-jinja2==3.1.5
-
-# Additional security packages
-certifi==2025.6.15
-urllib3==2.5.0
-requests==2.32.4
-
-# Enterprise GPT integration
-openai==1.58.1
-tiktoken==0.8.0
-
-# Microsoft Teams integration
+# Microsoft Bot Framework
 botbuilder-core==4.15.0
 botbuilder-schema==4.15.0
-botframework-connector==4.15.0
+botbuilder-integration-aiohttp==4.15.0
 
-# Additional monitoring and observability
-sentry-sdk[fastapi]==2.19.2
+# HTTP client
+aiohttp==3.11.11
+
+# OpenAI Enterprise GPT
+openai==1.58.1
+
+# Environment management
+python-dotenv==1.0.1
+
+# Logging
+structlog==24.5.0
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
 
