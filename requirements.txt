@@ -63,7 +63,7 @@ flake8==7.1.1
 mypy==1.14.0
 
 # Templates - Updated
-jinja2==3.1.5
+jinja2==3.1.6
 
 # Additional security packages
 certifi==2025.6.15
