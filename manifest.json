@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "{{TEAMS_APP_ID}}",
+  "packageName": "com.yourcompany.navo",
+  "developer": {
+    "name": "Your Company",
+    "websiteUrl": "https://github.com/mj3b/navo",
+    "privacyUrl": "https://github.com/mj3b/navo/blob/main/PRIVACY.md",
+    "termsOfUseUrl": "https://github.com/mj3b/navo/blob/main/TERMS.md"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "NAVO",
+    "full": "NAVO Knowledge Discovery Bot"
+  },
+  "description": {
+    "short": "AI-powered knowledge discovery from Confluence and SharePoint",
+    "full": "NAVO is your AI-powered teammate for documentation clarity. Ask questions in Teams and get instant answers from your Confluence and SharePoint documentation, powered by Enterprise GPT. Perfect for engineering teams seeking quick access to tribal knowledge, sprint specs, and production playbooks."
+  },
+  "accentColor": "#1a1a2e",
+  "bots": [
+    {
+      "botId": "{{TEAMS_APP_ID}}",
+      "scopes": [
+        "personal",
+        "team",
+        "groupchat"
+      ],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": [
+            "personal",
+            "team", 
+            "groupchat"
+          ],
+          "commands": [
+            {
+              "title": "Help",
+              "description": "Get help with NAVO commands and usage examples"
+            },
+            {
+              "title": "Search documentation",
+              "description": "Search for information in Confluence and SharePoint using natural language"
+            },
+            {
+              "title": "API documentation",
+              "description": "Find API documentation and technical specifications"
+            },
+            {
+              "title": "Deployment guide",
+              "description": "Get deployment and configuration information"
+            },
+            {
+              "title": "Troubleshooting",
+              "description": "Find troubleshooting guides and production playbooks"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "*.atlassian.net",
+    "*.sharepoint.com",
+    "graph.microsoft.com",
+    "login.microsoftonline.com"
+  ],
+  "webApplicationInfo": {
+    "id": "{{TEAMS_APP_ID}}",
+    "resource": "https://graph.microsoft.com"
+  }
+}
+

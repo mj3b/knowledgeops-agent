@@ -1,24 +1,30 @@
-# NAVO Requirements - Simplified Teams Integration
+# NAVO Requirements - Microsoft Teams Bot Framework Compliant
 
-# Core web framework
-fastapi==0.115.13
-uvicorn==0.32.1
-
-# Microsoft Bot Framework for Teams
+# Microsoft Bot Framework - Core Components
 botbuilder-core==4.15.0
 botbuilder-schema==4.15.0
 botbuilder-integration-aiohttp==4.15.0
 
-# HTTP client for API calls
-aiohttp==3.11.11
+# Web Framework
+aiohttp==3.9.1
+fastapi==0.104.1
+uvicorn==0.24.0
 
-# OpenAI for Enterprise GPT
-openai==1.58.1
+# AI and Language Processing
+openai==1.3.7
+aiohttp-retry==2.8.3
 
-# Environment and configuration
-python-dotenv==1.0.1
+# Environment and Configuration
+python-dotenv==1.0.0
 
-# Development and testing
-pytest==8.3.4
-pytest-asyncio==0.24.0
+# Microsoft Graph API (SharePoint)
+msal==1.25.0
+requests==2.31.0
+
+# Confluence API
+atlassian-python-api==3.41.0
+
+# Utilities
+pydantic==2.5.0
+typing-extensions==4.8.0
 

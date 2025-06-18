@@ -1,0 +1,67 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "your-teams-app-id-here",
+  "packageName": "com.yourcompany.navo",
+  "developer": {
+    "name": "Your Company",
+    "websiteUrl": "https://yourcompany.com",
+    "privacyUrl": "https://yourcompany.com/privacy",
+    "termsOfUseUrl": "https://yourcompany.com/terms"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "NAVO",
+    "full": "NAVO Knowledge Discovery Bot"
+  },
+  "description": {
+    "short": "AI-powered knowledge discovery from Confluence and SharePoint",
+    "full": "NAVO is your AI-powered teammate for documentation clarity. Ask questions in Teams and get instant answers from your Confluence and SharePoint documentation, powered by Enterprise GPT."
+  },
+  "accentColor": "#1a1a2e",
+  "bots": [
+    {
+      "botId": "your-bot-id-here",
+      "scopes": [
+        "personal",
+        "team",
+        "groupchat"
+      ],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": [
+            "personal",
+            "team",
+            "groupchat"
+          ],
+          "commands": [
+            {
+              "title": "Help",
+              "description": "Get help with NAVO commands"
+            },
+            {
+              "title": "Search documentation",
+              "description": "Search for information in Confluence and SharePoint"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "yourcompany.atlassian.net",
+    "yourcompany.sharepoint.com",
+    "your-navo-backend-domain.com"
+  ]
+}
+

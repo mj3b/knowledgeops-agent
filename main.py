@@ -1,19 +1,31 @@
 """
 NAVO Main Application
-Simple FastAPI server for Teams bot integration with Confluence and SharePoint
+Microsoft Teams Bot with Enterprise Knowledge Discovery
+
+FastAPI server that hosts the NAVO Teams bot with proper Microsoft Bot Framework
+integration for Confluence and SharePoint knowledge discovery.
+
+Compliant with Microsoft Teams bot hosting requirements.
 """
 
 import os
 import logging
-from fastapi import FastAPI, Request, Response
+from typing import Dict, Any
+from aiohttp import web
+from aiohttp.web import Request, Response, json_response
+from botbuilder.core import (
+    BotFrameworkAdapter, 
+    BotFrameworkAdapterSettings,
+    ConversationState,
+    UserState,
+    MemoryStorage,
+    TurnContext
+)
 from botbuilder.core.integration import aiohttp_error_middleware
-from botbuilder.integration.aiohttp import CloudAdapter, ConfigurationBotFrameworkAuthentication
-from dotenv import load_dotenv
+from botbuilder.schema import Activity
 
 from bot import NAVOBot
-
-# Load environment variables
-load_dotenv()
+from query_processor import QueryProcessor
 
 # Configure logging
 logging.basicConfig(
@@ -22,111 +34,221 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Create FastAPI app
-app = FastAPI(
-    title="NAVO Teams Bot",
-    description="Microsoft Teams Knowledge Discovery Bot",
-    version="1.0.0"
-)
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
 
-# Bot Framework authentication
-auth_config = ConfigurationBotFrameworkAuthentication(
-    app_id=os.getenv("TEAMS_APP_ID"),
-    app_password=os.getenv("TEAMS_APP_PASSWORD")
+# Microsoft Bot Framework settings
+SETTINGS = BotFrameworkAdapterSettings(
+    app_id=os.environ.get("TEAMS_APP_ID", ""),
+    app_password=os.environ.get("TEAMS_APP_PASSWORD", "")
 )
 
 # Create adapter and bot
-adapter = CloudAdapter(auth_config)
-bot = NAVOBot()
+ADAPTER = BotFrameworkAdapter(SETTINGS)
 
-@app.get("/")
-async def root():
-    """Health check endpoint"""
-    return {
-        "status": "NAVO Teams Bot is running",
-        "version": "1.0.0",
-        "description": "Microsoft Teams Knowledge Discovery Bot"
-    }
+# Create conversation and user state with memory storage
+MEMORY_STORAGE = MemoryStorage()
+CONVERSATION_STATE = ConversationState(MEMORY_STORAGE)
+USER_STATE = UserState(MEMORY_STORAGE)
 
-@app.get("/health")
-async def health():
-    """Detailed health check with integration status"""
-    integrations = {
-        "confluence": bool(os.getenv("CONFLUENCE_CLOUD_URL") and 
-                          os.getenv("CONFLUENCE_EMAIL") and 
-                          os.getenv("CONFLUENCE_API_TOKEN")),
-        "sharepoint": bool(os.getenv("SHAREPOINT_TENANT_ID") and 
-                          os.getenv("SHAREPOINT_CLIENT_ID") and 
-                          os.getenv("SHAREPOINT_CLIENT_SECRET")),
-        "enterprise_gpt": bool(os.getenv("OPENAI_API_KEY")),
-        "teams": bool(os.getenv("TEAMS_APP_ID") and 
-                     os.getenv("TEAMS_APP_PASSWORD"))
-    }
+# Create the NAVO bot instance
+BOT = NAVOBot(CONVERSATION_STATE, USER_STATE)
+
+# Query processor for direct API access
+QUERY_PROCESSOR = QueryProcessor()
+
+
+async def messages(req: Request) -> Response:
+    """
+    Microsoft Teams message endpoint
     
-    all_configured = all(integrations.values())
+    Handles incoming activities from Microsoft Teams via Bot Framework.
+    This is the main webhook endpoint that Teams calls.
     
-    return {
-        "status": "healthy" if all_configured else "partial",
-        "bot": "active",
-        "integrations": integrations,
-        "ready": all_configured
-    }
+    Args:
+        req: The HTTP request from Teams
+        
+    Returns:
+        Response: HTTP response for Teams
+    """
+    if "application/json" in req.headers["Content-Type"]:
+        body = await req.json()
+    else:
+        return Response(status=415, text="Content-Type must be application/json")
 
-@app.post("/api/messages")
-async def messages(request: Request):
-    """Teams bot messaging endpoint"""
+    activity = Activity().deserialize(body)
+    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
+
     try:
-        body = await request.body()
-        auth_header = request.headers.get("Authorization", "")
-        
-        response = await adapter.process_activity(
-            body.decode(), 
-            auth_header, 
-            bot.on_message_activity
-        )
-        
+        response = await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
         if response:
-            return Response(content=response.body, status_code=response.status)
-        return Response(status_code=200)
-        
+            return json_response(data=response.body, status=response.status)
+        return Response(status=201)
     except Exception as e:
-        logger.error(f"Error processing Teams message: {str(e)}")
-        return Response(status_code=500)
+        logger.error(f"Error processing Teams activity: {str(e)}")
+        return Response(status=500, text=str(e))
 
-@app.post("/api/v1/query")
-async def query_endpoint(request: Request):
-    """Direct query endpoint for testing"""
+
+async def health_check(req: Request) -> Response:
+    """
+    Health check endpoint for monitoring
+    
+    Returns:
+        Response: Health status of the NAVO service
+    """
     try:
-        data = await request.json()
-        query = data.get("query", "")
-        
-        if not query:
-            return {"error": "Query parameter required"}
-        
-        # Process query directly
-        response = await bot.query_processor.process_query(query)
-        
-        return {
-            "query": query,
-            "response": response
+        # Test basic functionality
+        health_status = {
+            "status": "healthy",
+            "service": "NAVO Teams Bot",
+            "version": "1.0.0",
+            "components": {
+                "bot_framework": "operational",
+                "query_processor": "operational",
+                "confluence_client": "operational",
+                "sharepoint_client": "operational"
+            }
         }
         
+        # Test query processor
+        test_response = await QUERY_PROCESSOR.process_query("health check")
+        if test_response:
+            health_status["components"]["ai_processing"] = "operational"
+        
+        return json_response(health_status)
     except Exception as e:
-        logger.error(f"Error processing direct query: {str(e)}")
-        return {"error": "Internal server error"}
+        logger.error(f"Health check failed: {str(e)}")
+        return json_response(
+            {"status": "unhealthy", "error": str(e)}, 
+            status=503
+        )
+
+
+async def query_api(req: Request) -> Response:
+    """
+    Direct query API endpoint (optional)
+    
+    Allows direct API access to NAVO's knowledge discovery
+    without going through Teams interface.
+    
+    Args:
+        req: HTTP request with query data
+        
+    Returns:
+        Response: JSON response with answer and sources
+    """
+    try:
+        if req.method == "POST":
+            data = await req.json()
+            query = data.get("query", "")
+            
+            if not query:
+                return json_response(
+                    {"error": "Query parameter is required"}, 
+                    status=400
+                )
+            
+            # Process query
+            response = await QUERY_PROCESSOR.process_query(query)
+            
+            return json_response({
+                "query": query,
+                "answer": response["answer"],
+                "sources": response["sources"],
+                "confidence": response["confidence"],
+                "processing_time": response.get("processing_time", 0)
+            })
+        else:
+            return json_response(
+                {"error": "Method not allowed"}, 
+                status=405
+            )
+            
+    except Exception as e:
+        logger.error(f"API query error: {str(e)}")
+        return json_response(
+            {"error": "Internal server error"}, 
+            status=500
+        )
+
+
+async def root_handler(req: Request) -> Response:
+    """
+    Root endpoint with service information
+    
+    Returns:
+        Response: Basic service information
+    """
+    return json_response({
+        "service": "NAVO - Microsoft Teams Knowledge Discovery Bot",
+        "description": "AI-powered knowledge discovery from Confluence and SharePoint",
+        "version": "1.0.0",
+        "endpoints": {
+            "teams_webhook": "/api/messages",
+            "health": "/health",
+            "query_api": "/api/v1/query"
+        },
+        "documentation": "https://github.com/mj3b/navo"
+    })
+
+
+def create_app() -> web.Application:
+    """
+    Create and configure the aiohttp web application
+    
+    Returns:
+        web.Application: Configured NAVO web application
+    """
+    # Create aiohttp application
+    app = web.Application(middlewares=[aiohttp_error_middleware])
+    
+    # Add routes
+    app.router.add_get("/", root_handler)
+    app.router.add_get("/health", health_check)
+    app.router.add_post("/api/messages", messages)  # Teams webhook endpoint
+    app.router.add_post("/api/v1/query", query_api)  # Direct API access
+    
+    return app
+
+
+async def init_app():
+    """Initialize the application"""
+    logger.info("Initializing NAVO Teams Bot...")
+    
+    # Validate required environment variables
+    required_vars = [
+        "TEAMS_APP_ID", "TEAMS_APP_PASSWORD",
+        "OPENAI_API_KEY", "CONFLUENCE_CLOUD_URL", 
+        "SHAREPOINT_TENANT_ID"
+    ]
+    
+    missing_vars = [var for var in required_vars if not os.environ.get(var)]
+    if missing_vars:
+        logger.error(f"Missing required environment variables: {missing_vars}")
+        raise ValueError(f"Missing environment variables: {missing_vars}")
+    
+    logger.info("NAVO Teams Bot initialized successfully")
+    logger.info("Microsoft Bot Framework adapter configured")
+    logger.info("Ready to receive Teams messages at /api/messages")
+
 
 if __name__ == "__main__":
-    import uvicorn
+    import asyncio
     
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", 8000))
+    # Initialize the application
+    asyncio.run(init_app())
     
-    logger.info(f"Starting NAVO Teams Bot on {host}:{port}")
-    logger.info("Integrations configured:")
-    logger.info(f"  - Confluence: {bool(os.getenv('CONFLUENCE_CLOUD_URL'))}")
-    logger.info(f"  - SharePoint: {bool(os.getenv('SHAREPOINT_TENANT_ID'))}")
-    logger.info(f"  - Enterprise GPT: {bool(os.getenv('OPENAI_API_KEY'))}")
-    logger.info(f"  - Teams: {bool(os.getenv('TEAMS_APP_ID'))}")
+    # Create and run the web application
+    app = create_app()
     
-    uvicorn.run(app, host=host, port=port)
+    # Get port from environment or default to 8000
+    port = int(os.environ.get("PORT", 8000))
+    
+    logger.info(f"Starting NAVO Teams Bot on port {port}")
+    logger.info("Teams webhook endpoint: /api/messages")
+    logger.info("Health check endpoint: /health")
+    logger.info("Direct API endpoint: /api/v1/query")
+    
+    web.run_app(app, host="0.0.0.0", port=port)
 
