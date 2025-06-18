@@ -1,5 +1,7 @@
 # NAVO: Enterprise Knowledge Discovery Platform
 
+![NAVO - Enterprise Knowledge Discovery Platform](assets/navo-banner.png)
+
 [![Tests](https://img.shields.io/badge/Tests-47%20pass-brightgreen)](tests/)
 [![Coverage](https://img.shields.io/badge/Coverage-94%25-brightgreen)](tests/)
 [![Latency](https://img.shields.io/badge/Latency-127ms-blue)](docs/PERFORMANCE.md)
