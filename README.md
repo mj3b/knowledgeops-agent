@@ -100,8 +100,6 @@ NAVO responds with:
 3. **Enterprise GPT processes** the content and generates answers
 4. **You get a rich response** with sources, confidence, and actions
 
-![NAVO Response Example](./assets/navo_teams_response_example.png)
-
 ### Microsoft Teams Integration
 - **Bot Framework 4.15**: Official Microsoft Bot Framework SDK
 - **Adaptive Cards v1.4**: Rich, interactive response cards
