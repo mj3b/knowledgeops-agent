@@ -19,7 +19,7 @@ python-dotenv==1.0.0
 
 # Microsoft Graph API (SharePoint)
 msal==1.25.0
-requests==2.31.0
+requests==2.32.4
 
 # Confluence API
 atlassian-python-api==3.41.0
