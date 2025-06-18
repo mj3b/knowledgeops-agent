@@ -107,7 +107,7 @@ NAVO brings knowledge to where work happens.
     │   Engine    │   Layer     │   Coord.    │ • Lifecycle Mgmt    │
     │ • NLP       │ • Reasoning │ • Unified   │ • Gap Detection     │
     │ • Source    │ • Learning  │   Search    │ • Auto-Organization │
-    │   Attribution│ • Governance│ • Permission│ • Proactive Insights│
+    │ Attribution │ • Governance│ • Permission│ • Proactive Insights│
     ├─────────────┴─────────────┴─────────────┴─────────────────────┤
     │                  Shared Infrastructure                        │
     │    • PostgreSQL  • Redis  • Elasticsearch  • Monitoring       │
