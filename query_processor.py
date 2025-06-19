@@ -247,14 +247,19 @@ Content: {content}
                 else:
                     excerpt = clean_content
             
-            # Format last modified date and calculate freshness
+            # Format last modified date
             formatted_date = self._format_date(last_modified)
+
+            # Calculate how many days old the document is
             days_old = None
-            if last_modified and last_modified != "Unknown" and "T" in last_modified:
+            if last_modified and last_modified != "Unknown":
+                from datetime import datetime, timezone
                 try:
-                    from datetime import datetime
-                    dt = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
-                    days_old = (datetime.now() - dt.replace(tzinfo=None)).days
+                    if "T" in last_modified:
+                        dt = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
+                    else:
+                        dt = datetime.fromisoformat(last_modified)
+                    days_old = (datetime.now(timezone.utc) - dt.astimezone(timezone.utc)).days
                 except Exception:
                     days_old = None
             
