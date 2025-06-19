@@ -125,16 +125,23 @@ Microsoft Bot Framework · Enterprise GPT · FastAPI · aiohttp · Confluence Cl
 
 ## Codebase Overview
 
-The project is organized into a handful of focused modules:
+NAVO is intentionally small and easy to navigate. The important modules are:
 
-- `main.py` – hosts the aiohttp web server and wires up the bot.
-- `bot.py` – core Teams bot logic using the Bot Framework SDK.
-- `query_processor.py` – orchestrates searches across knowledge sources and crafts prompts for GPT.
-- `confluence_client.py`, `sharepoint_client.py`, `local_files_client.py` – connectors to Confluence, SharePoint and optional local docs.
-- `adaptive_cards.py` – builds the Adaptive Cards shown in Teams.
-- `TEAMS_DEPLOYMENT.md` – step‑by‑step deployment guide for Azure and Teams.
+| File | Purpose |
+|------|---------|
+| `main.py` | aiohttp server and Bot Framework adapter setup |
+| `bot.py` | Teams bot logic and message handling |
+| `query_processor.py` | Coordinates searches and GPT prompts |
+| `confluence_client.py` | Confluence Cloud search client |
+| `sharepoint_client.py` | SharePoint Graph search client |
+| `local_files_client.py` | Optional local docs search (Markdown/text) |
+| `adaptive_cards.py` | Builds Teams Adaptive Cards |
+| `TEAMS_DEPLOYMENT.md` | Deployment guide |
 
-This layout makes it easy to add more knowledge sources or extend bot functionality.
+Each component can be extended or replaced. For example, implement a new
+knowledge source client and add it to the `QueryProcessor.sources` list.
+The card layout and actions are defined in `adaptive_cards.py` and can be
+tailored to your organization's style.
 
 ### Microsoft Compliance
 - ✅ **Bot Framework SDK**: Official Microsoft botbuilder-core

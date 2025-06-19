@@ -20,8 +20,9 @@ logger = logging.getLogger(__name__)
 
 class QueryProcessor:
     """
-    Processes user queries and retrieves relevant information
-    from Confluence and SharePoint using Enterprise GPT
+    Processes user queries and retrieves relevant information from
+    Confluence, SharePoint, and optional local documentation using
+    Enterprise GPT.
     """
     
     def __init__(self):
@@ -42,7 +43,14 @@ class QueryProcessor:
         self.confluence = ConfluenceClient()
         self.sharepoint = SharePointClient()
         self.local_files = LocalFilesClient()
-        
+
+        # Store in a list for easier extensibility
+        self.sources = [
+            self.confluence,
+            self.sharepoint,
+            self.local_files,
+        ]
+
         logger.info("Query processor initialized with Enterprise GPT")
     
     async def process_query(self, query: str) -> Dict[str, Any]:
@@ -60,23 +68,18 @@ class QueryProcessor:
         try:
             logger.info(f"Processing query: {query}")
             
-            # Search both knowledge sources concurrently
-            search_tasks = []
-            
-            if self.confluence.enabled:
-                search_tasks.append(self.confluence.search(query))
-
-            if self.sharepoint.enabled:
-                search_tasks.append(self.sharepoint.search(query))
-
-            if self.local_files.enabled:
-                search_tasks.append(self.local_files.search(query))
+            # Search all configured knowledge sources concurrently
+            search_tasks = [
+                source.search(query)
+                for source in self.sources
+                if getattr(source, "enabled", False)
+            ]
             
             if not search_tasks:
                 return {
                     "answer": (
-                        "No knowledge sources are configured. "
-                        "Please check your Confluence, SharePoint, and local files settings."
+                        "No knowledge sources are configured. Please check your "
+                        "Confluence, SharePoint, or local documentation settings."
                     ),
                     "sources": [],
                     "confidence": 0.0,
@@ -96,7 +99,11 @@ class QueryProcessor:
             
             if not all_results:
                 return {
-                    "answer": "I couldn't find any relevant documentation for your query. Please try rephrasing your question or check if the documents exist in Confluence or SharePoint.",
+                    "answer": (
+                        "I couldn't find any relevant documentation for your query. "
+                        "Try rephrasing or verify that the documents exist in "
+                        "Confluence, SharePoint, or the local docs folder."
+                    ),
                     "sources": [],
                     "confidence": 0.0,
                     "processing_time": time.time() - start_time
