@@ -2,8 +2,8 @@
 NAVO Main Application
 Microsoft Teams Bot with Enterprise Knowledge Discovery
 
-FastAPI server that hosts the NAVO Teams bot with proper Microsoft Bot Framework
-integration for Confluence and SharePoint knowledge discovery.
+aiohttp web server that hosts the NAVO Teams bot with proper Microsoft Bot
+Framework integration for Confluence and SharePoint knowledge discovery.
 
 Compliant with Microsoft Teams bot hosting requirements.
 """
