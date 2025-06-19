@@ -259,7 +259,8 @@ Content: {content}
                         dt = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
                     else:
                         dt = datetime.fromisoformat(last_modified)
-                    days_old = (datetime.now(timezone.utc) - dt.astimezone(timezone.utc)).days
+                    delta = datetime.now(timezone.utc) - dt.astimezone(timezone.utc)
+                    days_old = max(delta.days, 0)
                 except Exception:
                     days_old = None
             
