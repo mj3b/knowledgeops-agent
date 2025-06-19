@@ -143,6 +143,34 @@ knowledge source client and add it to the `QueryProcessor.sources` list.
 The card layout and actions are defined in `adaptive_cards.py` and can be
 tailored to your organization's style.
 
+### Directory Layout
+
+The repository root is flat for simplicity:
+
+```
+navo/
+├── main.py                # Entry point and aiohttp server
+├── bot.py                 # Teams bot handler
+├── query_processor.py     # Core search + GPT orchestration
+├── confluence_client.py   # Confluence integration
+├── sharepoint_client.py   # SharePoint integration
+├── local_files_client.py  # Optional local docs connector
+├── adaptive_cards.py      # Teams card templates
+├── TEAMS_DEPLOYMENT.md    # Full deployment walkthrough
+└── README.md              # You're here!
+```
+
+### Extending NAVO
+
+1. Create a new `XYZClient` with a `search()` coroutine that returns a list of
+   documents with `title`, `url`, `content`, and `last_modified` fields.
+2. Add the client to the `QueryProcessor.sources` list.
+3. Optionally tweak the prompts in `_generate_ai_response` to mention the new
+   source.
+
+With this pattern you can integrate wikis, code search, or other repositories
+of knowledge quickly.
+
 ### Microsoft Compliance
 - ✅ **Bot Framework SDK**: Official Microsoft botbuilder-core
 - ✅ **Teams Activity Handler**: Proper Teams-specific event handling  

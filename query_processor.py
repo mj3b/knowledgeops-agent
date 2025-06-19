@@ -147,16 +147,16 @@ class QueryProcessor:
             
             # Create prompt for Enterprise GPT
             system_prompt = (
-                "You are NAVO, an expert documentation assistant for software engineers. "
-                "Answer questions using information from Confluence, SharePoint, and local files. "
-                "Keep responses concise, professional and reference document titles when relevant. "
-                "If the documentation does not contain the answer, politely state that it could not be found."
+                "You are NAVO, an engineering knowledge assistant. "
+                "Use only the provided snippets from Confluence, SharePoint, or local files. "
+                "Keep answers concise and reference document titles when relevant. "
+                "If the answer is not present in the snippets, politely say so."
             )
 
             user_prompt = (
-                f"User question: {query}\n\n"
-                f"Documentation excerpts:\n{context}\n\n"
-                "Craft a short answer (3-5 sentences) with numbered references to the documentation where possible."
+                f"Question: {query}\n\n"
+                f"Snippets:\n{context}\n\n"
+                "Reply in 2-4 sentences. Include a short numbered list of steps if it helps clarify the answer."
             )
 
             # Call Enterprise GPT
