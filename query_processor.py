@@ -13,7 +13,11 @@ from openai import AsyncOpenAI
 
 from confluence_client import ConfluenceClient
 from sharepoint_client import SharePointClient
+<<<<<<< HEAD
 from local_docs_client import LocalDocsClient
+=======
+from local_files_client import LocalFilesClient
+>>>>>>> origin/y1otvn-codex/explain-codebase-structure-to-newcomers
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +25,13 @@ logger = logging.getLogger(__name__)
 class QueryProcessor:
     """
     Processes user queries and retrieves relevant information from
+<<<<<<< HEAD
     configurable knowledge sources using Enterprise GPT. Sources include
     Confluence, SharePoint, and optional local documentation.
+=======
+    Confluence, SharePoint, and optional local documentation using
+    Enterprise GPT.
+>>>>>>> origin/y1otvn-codex/explain-codebase-structure-to-newcomers
     """
     
     def __init__(self):
@@ -42,15 +51,25 @@ class QueryProcessor:
         # Initialize knowledge source clients
         self.confluence = ConfluenceClient()
         self.sharepoint = SharePointClient()
+<<<<<<< HEAD
         self.local_docs = LocalDocsClient()
+=======
+        self.local_files = LocalFilesClient()
+>>>>>>> origin/y1otvn-codex/explain-codebase-structure-to-newcomers
 
         # Store in a list for easier extensibility
         self.sources = [
             self.confluence,
             self.sharepoint,
+<<<<<<< HEAD
             self.local_docs,
         ]
         
+=======
+            self.local_files,
+        ]
+
+>>>>>>> origin/y1otvn-codex/explain-codebase-structure-to-newcomers
         logger.info("Query processor initialized with Enterprise GPT")
     
     async def process_query(self, query: str) -> Dict[str, Any]:
@@ -68,7 +87,11 @@ class QueryProcessor:
         try:
             logger.info(f"Processing query: {query}")
             
+<<<<<<< HEAD
             # Search both knowledge sources concurrently
+=======
+            # Search all configured knowledge sources concurrently
+>>>>>>> origin/y1otvn-codex/explain-codebase-structure-to-newcomers
             search_tasks = [
                 source.search(query)
                 for source in self.sources
@@ -83,7 +106,7 @@ class QueryProcessor:
                     ),
                     "sources": [],
                     "confidence": 0.0,
-                    "processing_time": time.time() - start_time
+                    "processing_time": time.time() - start_time,
                 }
             
             # Execute searches concurrently
@@ -146,17 +169,18 @@ class QueryProcessor:
             context = self._prepare_context(search_results)
             
             # Create prompt for Enterprise GPT
-            system_prompt = """You are NAVO, an AI assistant that synthesizes knowledge from company documentation.
-Use the provided context from Confluence, SharePoint, or local docs to craft precise answers.
-Always cite facts from the documentation and keep responses concise.
-When steps are required, present them as a numbered list. If context is insufficient, admit it."""
+            system_prompt = (
+                "You are NAVO, an engineering knowledge assistant. "
+                "Use only the provided snippets from Confluence, SharePoint, or local files. "
+                "Keep answers concise and reference document titles when relevant. "
+                "If the answer is not present in the snippets, politely say so."
+            )
 
-            user_prompt = f"""Question: {query}
-
-Documentation Snippets:
-{context}
-
-Provide a short answer (2-4 sentences) followed by any relevant steps or bullet points."""
+            user_prompt = (
+                f"Question: {query}\n\n"
+                f"Snippets:\n{context}\n\n"
+                "Reply in 2-4 sentences. Include a short numbered list of steps if it helps clarify the answer."
+            )
 
             # Call Enterprise GPT
             response = await self.openai_client.chat.completions.create(

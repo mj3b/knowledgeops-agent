@@ -74,9 +74,9 @@ SHAREPOINT_CLIENT_SECRET=your_client_secret
 SHAREPOINT_SITE_URL=https://yourcompany.sharepoint.com/sites/yoursite
 ```
 
-### Local Docs (optional)
+### Local Documentation (optional)
 ```env
-LOCAL_DOCS_PATH=/path/to/local/docs
+LOCAL_DOCS_PATH=/path/to/markdown/docs
 ```
 
 > **Ensure your Enterprise GPT endpoint supports OpenAI-compatible responses.**
@@ -92,192 +92,45 @@ LOCAL_DOCS_PATH=/path/to/local/docs
 
 NAVO responds with:
 - GPT-augmented answers from trusted documentation
-- Confluence + SharePoint links with freshness indicators
-- Interactive adaptive cards with action buttons
-- Confidence scoring and source attribution
+- Direct links to source documents
+- Confidence scores for answer reliability
+- Interactive Teams adaptive cards
 
 ---
 
-## How It Works
+## Technology Stack
 
-1. **Ask a question** in Teams (personal, group, or channel)
-2. **NAVO searches** Confluence & SharePoint using Microsoft APIs
-3. **Enterprise GPT processes** the content and generates answers
-4. **You get a rich response** with sources, confidence, and actions
+### Core Framework
+- **Microsoft Bot Framework 4.15**: Enterprise-grade Teams integration
+- **FastAPI**: High-performance async web framework
+- **Enterprise GPT**: AI-powered response generation
 
-### Microsoft Teams Integration
-- **Bot Framework 4.15**: Official Microsoft Bot Framework SDK
-- **Adaptive Cards v1.4**: Rich, interactive response cards
-- **Multi-scope support**: Personal chats, group chats, and channels
-- **@mention handling**: Responds to direct mentions in Teams
-- **Welcome messages**: Onboarding for new users
+### Knowledge Sources
+- **Confluence Cloud API**: Atlassian documentation platform
+- **Microsoft Graph API**: SharePoint Online integration
+- **Local Files**: Markdown documentation support
 
----
-
-## Architecture
-
-```
-Microsoft Teams → Bot Framework → NAVO Bot → Query Processor → [Confluence + SharePoint] → Enterprise GPT → Adaptive Card Response
-```
-
-**Technology Stack:**  
-Microsoft Bot Framework · Enterprise GPT · FastAPI · aiohttp · Confluence Cloud API · Microsoft Graph API · Adaptive Cards
-
-### Microsoft Compliance
-- ✅ **Bot Framework SDK**: Official Microsoft botbuilder-core
-- ✅ **Teams Activity Handler**: Proper Teams-specific event handling  
-- ✅ **Adaptive Cards v1.4**: Latest adaptive card specification
-- ✅ **Multi-scope support**: Personal, team, and group chat scopes
-- ✅ **Security**: OAuth2 and secure token handling
+### Deployment
+- **Docker**: Containerized deployment
+- **Azure Bot Service**: Cloud-native bot hosting
+- **Teams Admin Center**: Enterprise app distribution
 
 ---
 
-## Codebase Overview
-
-NAVO is intentionally small and easy to navigate. The important modules are:
-
-| File | Purpose |
-|------|---------|
-| `main.py` | aiohttp server and Bot Framework adapter setup |
-| `bot.py` | Teams bot logic and message handling |
-| `query_processor.py` | Coordinates searches and GPT prompts |
-| `confluence_client.py` | Confluence Cloud search client |
-| `sharepoint_client.py` | SharePoint Graph search client |
-| `local_docs_client.py` | Optional local docs search (Markdown/text) |
-| `adaptive_cards.py` | Builds Teams Adaptive Cards |
-
-Each component can be extended or replaced. For example, implement a new
-knowledge source client and add it to the `QueryProcessor.sources` list.
-The card layout and actions are defined in `adaptive_cards.py` and can be
-tailored to your organization's style.
-
----
-
-## Feature Roadmap
-
-| Phase | Feature Highlights                                        | Status       |
-|-------|-----------------------------------------------------------|--------------|
-| 1     | Natural language querying + GPT answers + source links    | ✅ Completed |
-| 2     | Confidence scoring, freshness indicators, reasoning trace | 🚧 In Progress |
-| 3     | Feedback loop and adaptive learning                       | 🔜 Planned    |
-
----
-
-## API Endpoints
-
-### Teams Webhook
-```
-POST /api/messages
-```
-Microsoft Teams webhook endpoint for bot messages.
-
-### Health Check
-```
-GET /health
-```
-Service health and component status.
-
-### Direct Query API (Optional)
+## Quick Test
 ```bash
-curl -X POST http://localhost:8000/api/v1/query \
-  -H "Content-Type: application/json" \
-  -d '{"query": "Where is the retry logic for QLAB02?"}'
+curl -X POST http://localhost:8000/health
+# Response: {"status": "healthy", "timestamp": "2025-06-19T10:30:00Z"}
 ```
-
----
-
-## Deployment
-
-### Docker
-```bash
-docker build -t navo-teams-bot .
-docker run -p 8000:8000 --env-file .env navo-teams-bot
-```
-
-### Azure App Service
-```bash
-az webapp create --resource-group myRG --plan myPlan --name navo-bot --runtime "PYTHON|3.11"
-az webapp config appsettings set --resource-group myRG --name navo-bot --settings @.env
-```
-
-### Kubernetes
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: navo-teams-bot
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: navo-teams-bot
-  template:
-    spec:
-      containers:
-      - name: navo-teams-bot
-        image: navo-teams-bot:latest
-        ports:
-        - containerPort: 8000
-```
-
-For step-by-step instructions on registering the bot in Azure and packaging the Teams app, see **[TEAMS_DEPLOYMENT.md](./TEAMS_DEPLOYMENT.md)**.
-
----
-
-## Microsoft Teams App Package
-
-### Files Included
-- `manifest.json`: Teams app manifest (v1.16)
-- `color.png`: 192x192 app icon
-- `outline.png`: 32x32 outline icon
-
-### Installation
-1. Update `manifest.json` with your Bot App ID
-2. Create app package: `zip -r navo-teams-app.zip manifest.json *.png`
-3. Upload to Teams Admin Center
-4. Install in your organization
-
----
-
-## About
-NAVO is an enterprise knowledge discovery platform that transforms documentation search into proactive knowledge orchestration. It features:
-
-- **AI-powered conversational interface** using Enterprise GPT
-- **Microsoft Teams native integration** with Bot Framework
-- **Transparent reasoning and memory** (Phase 2+)
-- **Enterprise security** with OAuth2 and secure token handling
-- **Multi-source integration** with Confluence & SharePoint APIs
-
-### Microsoft Teams Bot Categories
-NAVO fits perfectly into Microsoft's recommended bot types:
-- ✅ **Q&A Bots**: Answers user questions from documentation
-- ✅ **Information Retrieval Bots**: Accesses external enterprise systems
-- ✅ **Workflow Bots**: Initiates knowledge discovery workflows
-- ✅ **Enterprise Bots**: Connects to business-critical data sources
-
----
-
-## Topics
-`microsoft-teams` `bot-framework` `python` `nlp` `docker` `enterprise` `oauth` `machine-learning` `microservices` `rest-api` `sharepoint` `confluence` `semantic-search` `knowledge-management` `enterprise-search` `ai-search` `adaptive-cards`
 
 ---
 
 ## Maintainers
-- [@mj3b](https://github.com/mj3b) — Creator & Maintainer
-- [@dependabot](https://github.com/dependabot[bot]) — Dependency automation
+- [@mj3b](https://github.com/mj3b) - Core maintainer
+- [@dependabot](https://github.com/dependabot) - Security updates
 
 ---
 
-## Support
-- **Documentation**: [GitHub Repository](https://github.com/mj3b/navo)
-- **Issues**: [GitHub Issues](https://github.com/mj3b/navo/issues)
-- **Deployment Guide**: [TEAMS_DEPLOYMENT.md](./TEAMS_DEPLOYMENT.md)
-- **Microsoft Teams Platform**: [Teams Developer Documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/)
-
----
-
-**NAVO knows where it's written.**  
-Navigate + Ops = Better documentation discovery.
-
-*Built with ❤️ for engineering teams using Microsoft Teams*
+## Topics
+`microsoft-teams` `confluence` `sharepoint` `enterprise-gpt` `knowledge-management` `documentation` `bot-framework` `fastapi` `python`
 

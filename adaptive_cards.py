@@ -298,6 +298,15 @@ def create_response_card(
             }
         }
     ]
+
+    # Allow users to run a web search with the same query
+    actions.append(
+        {
+            "type": "Action.OpenUrl",
+            "title": "🔗 Web Search",
+            "url": f"https://www.bing.com/search?q={query.replace(' ', '+')}",
+        }
+    )
     
     # Add "View All Sources" if more than 3 sources
     if len(sources) > 3:

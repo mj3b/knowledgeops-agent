@@ -108,6 +108,9 @@ SHAREPOINT_TENANT_ID=your-tenant-id
 SHAREPOINT_CLIENT_ID=your-client-id
 SHAREPOINT_CLIENT_SECRET=your-client-secret
 SHAREPOINT_SITE_URL=https://yourcompany.sharepoint.com/sites/yoursite
+
+# Optional local documentation search
+LOCAL_DOCS_PATH=/path/to/markdown/docs
 ```
 
 ### Local Docs (optional)
