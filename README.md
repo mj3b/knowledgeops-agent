@@ -146,10 +146,10 @@ NAVO is intentionally small and easy to navigate. The important modules are:
 | `local_docs_client.py` | Optional local docs search (Markdown/text) |
 | `adaptive_cards.py` | Builds Teams Adaptive Cards |
 
-Each component can be extended or replaced. For example, you can implement a new
-knowledge source client and register it in `query_processor.py`. The card layout
-and actions are defined in `adaptive_cards.py` and can be tailored to your
-organization's style.
+Each component can be extended or replaced. For example, implement a new
+knowledge source client and add it to the `QueryProcessor.sources` list.
+The card layout and actions are defined in `adaptive_cards.py` and can be
+tailored to your organization's style.
 
 ---
 

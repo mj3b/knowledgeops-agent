@@ -20,8 +20,9 @@ logger = logging.getLogger(__name__)
 
 class QueryProcessor:
     """
-    Processes user queries and retrieves relevant information
-    from Confluence and SharePoint using Enterprise GPT
+    Processes user queries and retrieves relevant information from
+    configurable knowledge sources using Enterprise GPT. Sources include
+    Confluence, SharePoint, and optional local documentation.
     """
     
     def __init__(self):
@@ -42,6 +43,13 @@ class QueryProcessor:
         self.confluence = ConfluenceClient()
         self.sharepoint = SharePointClient()
         self.local_docs = LocalDocsClient()
+
+        # Store in a list for easier extensibility
+        self.sources = [
+            self.confluence,
+            self.sharepoint,
+            self.local_docs,
+        ]
         
         logger.info("Query processor initialized with Enterprise GPT")
     
@@ -61,16 +69,11 @@ class QueryProcessor:
             logger.info(f"Processing query: {query}")
             
             # Search both knowledge sources concurrently
-            search_tasks = []
-            
-            if self.confluence.enabled:
-                search_tasks.append(self.confluence.search(query))
-            
-            if self.sharepoint.enabled:
-                search_tasks.append(self.sharepoint.search(query))
-
-            if self.local_docs.enabled:
-                search_tasks.append(self.local_docs.search(query))
+            search_tasks = [
+                source.search(query)
+                for source in self.sources
+                if getattr(source, "enabled", False)
+            ]
             
             if not search_tasks:
                 return {
