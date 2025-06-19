@@ -223,12 +223,13 @@ Content: {content}
     def _format_sources(self, search_results: List[Dict]) -> List[Dict]:
         """
         Format sources for adaptive card display
-        
+
         Args:
             search_results: Raw search results from knowledge sources
-            
+
         Returns:
-            Formatted sources for Teams adaptive cards
+            Formatted sources for Teams adaptive cards. Each entry includes
+            ``days_old`` representing the document's age in days.
         """
         sources = []
         

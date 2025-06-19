@@ -57,3 +57,48 @@ def test_format_date_invalid_iso(monkeypatch, qp):
     # Invalid month triggers fallback path
     result = qp._format_date('2023-13-01T00:00:00Z')
     assert result == 'Recently updated'
+
+
+def test_format_sources_includes_days_old(monkeypatch, qp):
+    fixed_now = datetime.datetime(2023, 1, 2, 12, 0, 0, tzinfo=datetime.timezone.utc)
+
+    class FixedDatetime(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return fixed_now
+
+    monkeypatch.setattr(datetime, 'datetime', FixedDatetime)
+
+    # Stub _format_date to isolate days_old calculation
+    monkeypatch.setattr(qp, '_format_date', lambda x: 'Yesterday')
+
+    results = [
+        {
+            'title': 'Doc',
+            'url': 'http://example.com',
+            'source': 'Confluence',
+            'last_modified': '2023-01-01T12:00:00Z',
+            'content': 'Some content'
+        }
+    ]
+
+    formatted = qp._format_sources(results)
+    assert formatted[0]['days_old'] == 1
+    assert formatted[0]['last_updated'] == 'Yesterday'
+
+
+def test_format_sources_invalid_date(monkeypatch, qp):
+    monkeypatch.setattr(qp, '_format_date', lambda x: 'Recently updated')
+
+    results = [
+        {
+            'title': 'Doc',
+            'url': 'http://example.com',
+            'source': 'Confluence',
+            'last_modified': 'invalid-date',
+            'content': ''
+        }
+    ]
+
+    formatted = qp._format_sources(results)
+    assert formatted[0]['days_old'] is None
