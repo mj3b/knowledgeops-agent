@@ -13,6 +13,7 @@ from openai import AsyncOpenAI
 
 from confluence_client import ConfluenceClient
 from sharepoint_client import SharePointClient
+from local_docs_client import LocalDocsClient
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,7 @@ class QueryProcessor:
         # Initialize knowledge source clients
         self.confluence = ConfluenceClient()
         self.sharepoint = SharePointClient()
+        self.local_docs = LocalDocsClient()
         
         logger.info("Query processor initialized with Enterprise GPT")
     
@@ -66,10 +68,16 @@ class QueryProcessor:
             
             if self.sharepoint.enabled:
                 search_tasks.append(self.sharepoint.search(query))
+
+            if self.local_docs.enabled:
+                search_tasks.append(self.local_docs.search(query))
             
             if not search_tasks:
                 return {
-                    "answer": "No knowledge sources are configured. Please check your Confluence and SharePoint settings.",
+                    "answer": (
+                        "No knowledge sources are configured. Please check your "
+                        "Confluence, SharePoint, or local documentation settings."
+                    ),
                     "sources": [],
                     "confidence": 0.0,
                     "processing_time": time.time() - start_time
@@ -88,7 +96,11 @@ class QueryProcessor:
             
             if not all_results:
                 return {
-                    "answer": "I couldn't find any relevant documentation for your query. Please try rephrasing your question or check if the documents exist in Confluence or SharePoint.",
+                    "answer": (
+                        "I couldn't find any relevant documentation for your query. "
+                        "Try rephrasing or verify that the documents exist in "
+                        "Confluence, SharePoint, or the local docs folder."
+                    ),
                     "sources": [],
                     "confidence": 0.0,
                     "processing_time": time.time() - start_time
@@ -131,22 +143,17 @@ class QueryProcessor:
             context = self._prepare_context(search_results)
             
             # Create prompt for Enterprise GPT
-            system_prompt = """You are NAVO, a helpful knowledge discovery assistant for engineering teams. 
-You help users find information from their organization's Confluence and SharePoint documentation.
+            system_prompt = """You are NAVO, an AI assistant that synthesizes knowledge from company documentation.
+Use the provided context from Confluence, SharePoint, or local docs to craft precise answers.
+Always cite facts from the documentation and keep responses concise.
+When steps are required, present them as a numbered list. If context is insufficient, admit it."""
 
-Guidelines:
-- Provide clear, concise answers based on the documentation context
-- Include specific technical details when available
-- If information is incomplete or unclear, acknowledge this
-- Be professional and helpful
-- Focus on actionable information"""
+            user_prompt = f"""Question: {query}
 
-            user_prompt = f"""Based on the following documentation, please answer this question: {query}
-
-Documentation Context:
+Documentation Snippets:
 {context}
 
-Please provide a helpful answer based on the available information."""
+Provide a short answer (2-4 sentences) followed by any relevant steps or bullet points."""
 
             # Call Enterprise GPT
             response = await self.openai_client.chat.completions.create(
