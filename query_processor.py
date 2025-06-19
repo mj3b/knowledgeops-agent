@@ -13,6 +13,7 @@ from openai import AsyncOpenAI
 
 from confluence_client import ConfluenceClient
 from sharepoint_client import SharePointClient
+from local_files_client import LocalFilesClient
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,7 @@ class QueryProcessor:
         # Initialize knowledge source clients
         self.confluence = ConfluenceClient()
         self.sharepoint = SharePointClient()
+        self.local_files = LocalFilesClient()
         
         logger.info("Query processor initialized with Enterprise GPT")
     
@@ -63,16 +65,22 @@ class QueryProcessor:
             
             if self.confluence.enabled:
                 search_tasks.append(self.confluence.search(query))
-            
+
             if self.sharepoint.enabled:
                 search_tasks.append(self.sharepoint.search(query))
+
+            if self.local_files.enabled:
+                search_tasks.append(self.local_files.search(query))
             
             if not search_tasks:
                 return {
-                    "answer": "No knowledge sources are configured. Please check your Confluence and SharePoint settings.",
+                    "answer": (
+                        "No knowledge sources are configured. "
+                        "Please check your Confluence, SharePoint, and local files settings."
+                    ),
                     "sources": [],
                     "confidence": 0.0,
-                    "processing_time": time.time() - start_time
+                    "processing_time": time.time() - start_time,
                 }
             
             # Execute searches concurrently
@@ -131,22 +139,18 @@ class QueryProcessor:
             context = self._prepare_context(search_results)
             
             # Create prompt for Enterprise GPT
-            system_prompt = """You are NAVO, a helpful knowledge discovery assistant for engineering teams. 
-You help users find information from their organization's Confluence and SharePoint documentation.
+            system_prompt = (
+                "You are NAVO, an expert documentation assistant for software engineers. "
+                "Answer questions using information from Confluence, SharePoint, and local files. "
+                "Keep responses concise, professional and reference document titles when relevant. "
+                "If the documentation does not contain the answer, politely state that it could not be found."
+            )
 
-Guidelines:
-- Provide clear, concise answers based on the documentation context
-- Include specific technical details when available
-- If information is incomplete or unclear, acknowledge this
-- Be professional and helpful
-- Focus on actionable information"""
-
-            user_prompt = f"""Based on the following documentation, please answer this question: {query}
-
-Documentation Context:
-{context}
-
-Please provide a helpful answer based on the available information."""
+            user_prompt = (
+                f"User question: {query}\n\n"
+                f"Documentation excerpts:\n{context}\n\n"
+                "Craft a short answer (3-5 sentences) with numbered references to the documentation where possible."
+            )
 
             # Call Enterprise GPT
             response = await self.openai_client.chat.completions.create(

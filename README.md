@@ -74,6 +74,11 @@ SHAREPOINT_CLIENT_SECRET=your_client_secret
 SHAREPOINT_SITE_URL=https://yourcompany.sharepoint.com/sites/yoursite
 ```
 
+### Local Documentation (optional)
+```env
+LOCAL_DOCS_PATH=/path/to/markdown/docs
+```
+
 > **Ensure your Enterprise GPT endpoint supports OpenAI-compatible responses.**
 
 ---
@@ -117,6 +122,19 @@ Microsoft Teams → Bot Framework → NAVO Bot → Query Processor → [Confluen
 
 **Technology Stack:**  
 Microsoft Bot Framework · Enterprise GPT · FastAPI · aiohttp · Confluence Cloud API · Microsoft Graph API · Adaptive Cards
+
+## Codebase Overview
+
+The project is organized into a handful of focused modules:
+
+- `main.py` – hosts the aiohttp web server and wires up the bot.
+- `bot.py` – core Teams bot logic using the Bot Framework SDK.
+- `query_processor.py` – orchestrates searches across knowledge sources and crafts prompts for GPT.
+- `confluence_client.py`, `sharepoint_client.py`, `local_files_client.py` – connectors to Confluence, SharePoint and optional local docs.
+- `adaptive_cards.py` – builds the Adaptive Cards shown in Teams.
+- `TEAMS_DEPLOYMENT.md` – step‑by‑step deployment guide for Azure and Teams.
+
+This layout makes it easy to add more knowledge sources or extend bot functionality.
 
 ### Microsoft Compliance
 - ✅ **Bot Framework SDK**: Official Microsoft botbuilder-core
