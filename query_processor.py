@@ -247,14 +247,23 @@ Content: {content}
                 else:
                     excerpt = clean_content
             
-            # Format last modified date
+            # Format last modified date and calculate freshness
             formatted_date = self._format_date(last_modified)
+            days_old = None
+            if last_modified and last_modified != "Unknown" and "T" in last_modified:
+                try:
+                    from datetime import datetime
+                    dt = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
+                    days_old = (datetime.now() - dt.replace(tzinfo=None)).days
+                except Exception:
+                    days_old = None
             
             source_info = {
                 "title": title,
                 "url": url,
                 "source_type": source_type,
                 "last_updated": formatted_date,
+                "days_old": days_old,
                 "excerpt": excerpt or "No preview available"
             }
             
