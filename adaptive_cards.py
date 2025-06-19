@@ -288,6 +288,14 @@ def create_response_card(
                 "query": query,
                 "context": "knowledge_discovery"
             }
+        },
+        {
+            "type": "Action.Submit",
+            "title": "🗒️ Copy Answer",
+            "data": {
+                "action": "copy",
+                "text": answer
+            }
         }
     ]
     

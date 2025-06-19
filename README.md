@@ -74,6 +74,11 @@ SHAREPOINT_CLIENT_SECRET=your_client_secret
 SHAREPOINT_SITE_URL=https://yourcompany.sharepoint.com/sites/yoursite
 ```
 
+### Local Docs (optional)
+```env
+LOCAL_DOCS_PATH=/path/to/local/docs
+```
+
 > **Ensure your Enterprise GPT endpoint supports OpenAI-compatible responses.**
 
 ---
@@ -124,6 +129,27 @@ Microsoft Bot Framework · Enterprise GPT · FastAPI · aiohttp · Confluence Cl
 - ✅ **Adaptive Cards v1.4**: Latest adaptive card specification
 - ✅ **Multi-scope support**: Personal, team, and group chat scopes
 - ✅ **Security**: OAuth2 and secure token handling
+
+---
+
+## Codebase Overview
+
+NAVO is intentionally small and easy to navigate. The important modules are:
+
+| File | Purpose |
+|------|---------|
+| `main.py` | aiohttp server and Bot Framework adapter setup |
+| `bot.py` | Teams bot logic and message handling |
+| `query_processor.py` | Coordinates searches and GPT prompts |
+| `confluence_client.py` | Confluence Cloud search client |
+| `sharepoint_client.py` | SharePoint Graph search client |
+| `local_docs_client.py` | Optional local docs search (Markdown/text) |
+| `adaptive_cards.py` | Builds Teams Adaptive Cards |
+
+Each component can be extended or replaced. For example, you can implement a new
+knowledge source client and register it in `query_processor.py`. The card layout
+and actions are defined in `adaptive_cards.py` and can be tailored to your
+organization's style.
 
 ---
 
@@ -194,7 +220,7 @@ spec:
         - containerPort: 8000
 ```
 
-**Complete deployment guide**: [TEAMS_DEPLOYMENT.md](./TEAMS_DEPLOYMENT.md)
+For step-by-step instructions on registering the bot in Azure and packaging the Teams app, see **[TEAMS_DEPLOYMENT.md](./TEAMS_DEPLOYMENT.md)**.
 
 ---
 
