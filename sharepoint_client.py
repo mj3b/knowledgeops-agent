@@ -8,7 +8,6 @@ import os
 import logging
 from typing import List, Dict, Any
 import aiohttp
-import json
 
 logger = logging.getLogger(__name__)
 
