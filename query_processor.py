@@ -268,8 +268,8 @@ Content: {content}
                 "url": url,
                 "source_type": source_type,
                 "last_updated": formatted_date,
+                "excerpt": excerpt or "No preview available",
                 "days_old": days_old,
-                "excerpt": excerpt or "No preview available"
             }
             
             sources.append(source_info)
