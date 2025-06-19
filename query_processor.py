@@ -225,7 +225,9 @@ Content: {content}
             search_results: Raw search results from knowledge sources
             
         Returns:
-            Formatted sources for Teams adaptive cards
+            Formatted sources for Teams adaptive cards. Each entry includes
+            ``days_old`` representing how many days ago the document was last
+            modified.
         """
         sources = []
         
