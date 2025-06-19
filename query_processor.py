@@ -242,13 +242,27 @@ Content: {content}
             
             # Format last modified date
             formatted_date = self._format_date(last_modified)
+
+            # Calculate how many days old the document is
+            days_old = None
+            if last_modified and last_modified != "Unknown":
+                from datetime import datetime, timezone
+                try:
+                    if "T" in last_modified:
+                        dt = datetime.fromisoformat(last_modified.replace("Z", "+00:00"))
+                    else:
+                        dt = datetime.fromisoformat(last_modified)
+                    days_old = (datetime.now(timezone.utc) - dt.astimezone(timezone.utc)).days
+                except Exception:
+                    days_old = None
             
             source_info = {
                 "title": title,
                 "url": url,
                 "source_type": source_type,
                 "last_updated": formatted_date,
-                "excerpt": excerpt or "No preview available"
+                "excerpt": excerpt or "No preview available",
+                "days_old": days_old,
             }
             
             sources.append(source_info)
