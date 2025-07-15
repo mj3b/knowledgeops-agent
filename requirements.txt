@@ -6,7 +6,7 @@ botbuilder-schema==4.15.0
 botbuilder-integration-aiohttp==4.15.0
 
 # Web Framework
-aiohttp==3.9.1
+aiohttp==3.12.14
 fastapi==0.104.1
 uvicorn==0.24.0
 
